@@ -1,12 +1,13 @@
 # 2d1G
 
-zwei dumme ein Gedanke
+Zwei dumme ein Gedanke und noch so ein lustiges Trinkspiel
 
 # Flask Backend
 
 ## Setup & Installtion
 
 Make sure you have the latest version of Python installed.
+Tested with Pyhton 3.0.2 64-Bit Windows 10 Enterprise
 
 ```bash
 pip install -r requirements.txt
