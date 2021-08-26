@@ -1,8 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import path
-from sqlalchemy.engine import create_engine
-from sqlalchemy.orm.session import Session
+import os
 
 
 db = SQLAlchemy()
@@ -11,7 +9,7 @@ DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///data/{DB_NAME}'
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
 
     db.init_app(app)
@@ -29,6 +27,15 @@ def create_app():
 
 
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
-        db.create_all(app=app)
-        print('Created Database!')
+
+    try:
+        if os.path.exists('website/data/' + DB_NAME):
+            print('Old Database will be deleted')
+            os.remove('website/data/' + f'{DB_NAME}')
+
+    except FileNotFoundError:
+        print('Cannot find old Database')
+
+    db.create_all(app=app)
+    print('Created a new Database!')
+
