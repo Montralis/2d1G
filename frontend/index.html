@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>2 Dumme 1 Gedanke</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+    <div x-data="data"
+         x-init="twoIdiots = await getRandCategory(); guess = await getRandSchaetzfrage();"
+    >
+        <div x-show="mode === 'home'"
+             x-transition
+        >
+            <button @click="mode = 'twoIdiots';"
+                    :disabled="!twoIdiots"
+            >
+                2 Dumme 1 Gedanke
+            </button>
+            <button
+                @click="mode = 'guess';"
+                :disabled="!guess"
+            >
+                Schätzfragen
+            </button>
+        </div>
+
+        <template x-if="mode === 'twoIdiots'">
+            <div>
+                <h1 x-text="twoIdiots.categorie"></h1>
+                <button @click="twoIdiots = await getRandCategory()"
+                >
+                    Nächste Kategorie
+                </button>
+                <hr>
+                <button @click="mode = 'home';">Zurück</button>
+            </div>
+        </template>
+
+        <template x-if="mode === 'guess'">
+            <div>
+                <h1 x-text="guess.frage"></h1>
+                <button @click="guess.answerVisible = true;"
+                        x-show="!guess.answerVisible"
+                        x-transition
+                >
+                    Antwort zeigen
+                </button>
+                <h2 x-text="guess.antwort"
+                    x-show="guess.answerVisible"
+                    x-transition
+                ></h2>
+                <button @click="guess.answerVisible = false; guess = await getRandSchaetzfrage();"
+                        x-show="guess.answerVisible"
+                        x-transition
+                >
+                    Nächste Schätzfrage
+                </button>
+                <hr>
+                <button @click="mode = 'home';">Zurück</button>
+            </div>
+        </template>
+    </div>
+</body>
+</html>
