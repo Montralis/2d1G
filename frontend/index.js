@@ -4,12 +4,17 @@ const config = {
 
 const data = {
     mode: 'home',
+    titles: {
+        home: 'Wähle ein Trinkspiel aus',
+        twoIdiots: '2 Dumme 1 Gedanke',
+        guess: 'Schätzfragen',
+    },
     twoIdiots: {
-        categorie: '',
+        categorie: null,
     },
     guess: {
-        frage: '',
-        antwort: '',
+        frage: null,
+        antwort: null,
         answerVisible: false,
     },
 };
@@ -27,9 +32,15 @@ async function fetchResult(endpoint) {
 }
 
 async function getRandCategory() {
-    return fetchResult('randomTwo');
+    const result = await fetchResult('randomTwo');
+    return result ? result : { categorie: null };
 }
 
 async function getRandSchaetzfrage() {
-    return fetchResult('randomSchaetzen');
+    const result = await fetchResult('randomSchaetzen');
+    return result ? result : {
+        frage: null,
+        antwort: null,
+        answerVisible: false,
+    };
 }
