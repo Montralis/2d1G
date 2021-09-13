@@ -1,41 +1,79 @@
-from sqlalchemy.sql.expression import select
-from .models import schaetzen, two_idiots
+from os import path
 from flask import Blueprint, jsonify
-from  sqlalchemy.sql.expression import func, select
-from . import db
+import json
+import random
 
 
 request = Blueprint('request', __name__)
 
+# route for Game: Guess
 
-def fill_database():
+@request.route('/randomGuess', methods=['GET'])
+def guesss():
+    json_file_path = "website/data/guess.json"
 
-    from website.models import schaetzen, two_idiots
-    from faker import Faker
-    faker = Faker()
+    try:
+        with open(json_file_path, "r") as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["data"]
+            random.shuffle(dataDict)
 
-    for i in range(1,100):
-        spiel1 = schaetzen(frage = faker.text(max_nb_chars=80), antwort = faker.text(max_nb_chars=200), fun_fact = faker.text(max_nb_chars=80))
-        spiel2 = two_idiots(categorie = faker.text(max_nb_chars=100))
-        db.session.add(spiel1)
-        db.session.add(spiel2)
-    db.session.commit()
+            return jsonify(dataDict)
 
-    print('Testdata were created')
-
-
-@request.route('/randomSchaetzen', methods=['GET'])
-def randomSchaetzen():
-    # result = db.session.execute(select(schaetzen).order_by(schaetzen.id))   
-    result = db.session.query(schaetzen).order_by(func.random()).first()
-    print('asdasd sad asd asd asd a' ,result) 
-    return jsonify({'result':result})
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename")
+        return {"error" : "cant open file"}
 
 
 
-@request.route('/randomTwo', methods=['GET'])
+@request.route('/sturctureGuess', methods=['GET'])
+def guesssSturcture():
+    json_file_path = "website/data/guess.json"
+
+    try:
+        with open(json_file_path, "r") as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["objectStructur"]
+
+            return jsonify(dataDict)
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename")
+        return {"error" : "cant open file"}
+
+
+# ------------------------------------------------------------------
+# route for Game: TwoIdiots
+
+@request.route('/randomTwoIdiots', methods=['GET'])
 def randomTwo():
-    result = db.session.query(two_idiots).order_by(func.random()).first()
-    print('asdasd sad asd asd asd a' ,result) 
-    return jsonify({'result':result})
+    json_file_path = "website/data/twoIdiots.json"
 
+    try:
+        with open(json_file_path, "r") as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["data"]
+            random.shuffle(dataDict)
+
+            return jsonify(dataDict)
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename")
+        return {"error" : "cant open file"}
+
+
+
+@request.route('/sturctureTwoIdiots', methods=['GET'])
+def guesssGuess():
+    json_file_path = "website/data/twoIdiots.json"
+
+    try:
+        with open(json_file_path, "r") as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["objectStructur"]
+
+            return jsonify(dataDict)
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename")
+        return {"error" : "cant open file"}

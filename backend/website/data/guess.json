@@ -1,0 +1,48 @@
+{
+    "name": "guess",
+    "type": "json",
+    "objectStructur": {
+        "id": "int",
+        "question": "string",
+        "answer": "string",
+        "funfact": "string"
+    },
+    "data": [
+        {
+            "id": 1,
+            "question": "Höhe Eifelturm",
+            "answer": "Automarke",
+            "funfact": "Automarke"
+        },
+        {
+            "id": 2,
+            "question": "Automarke",
+            "answer": "Automarke",
+            "funfact": "Automarke"
+        },
+        {
+            "id": 3,
+            "question": "Automarke",
+            "answer": "Automarke",
+            "funfact": "Automarke"
+        },
+        {
+            "id": 4,
+            "question": "Automarke",
+            "answer": "Automarke",
+            "funfact": "Automarke"
+        },
+        {
+            "id": 5,
+            "question": "Automarke",
+            "answer": "Automarke",
+            "funfact": "Automarke"
+        },
+        {
+            "id": 6,
+            "question": "Automarke",
+            "answer": "Automarke",
+            "funfact": "Automarke"
+        }
+    ]
+}
