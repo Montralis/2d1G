@@ -8,6 +8,7 @@ request = Blueprint('request', __name__)
 
 # route for Game: Guess
 
+# returns a shuffeld list of guess questions | return == array
 @request.route('/randomGuess', methods=['GET'])
 def guesss():
     json_file_path = "website/data/guess.json"
@@ -25,7 +26,7 @@ def guesss():
         return {"error" : "cant open file"}
 
 
-
+# returns the sturcture of a Guess Object | return == JSON
 @request.route('/sturctureGuess', methods=['GET'])
 def guesssSturcture():
     json_file_path = "website/data/guess.json"
@@ -45,6 +46,8 @@ def guesssSturcture():
 # ------------------------------------------------------------------
 # route for Game: TwoIdiots
 
+
+# returns a shuffeld list of twoIdiots questions | return == array
 @request.route('/randomTwoIdiots', methods=['GET'])
 def randomTwo():
     json_file_path = "website/data/twoIdiots.json"
@@ -62,7 +65,7 @@ def randomTwo():
         return {"error" : "cant open file"}
 
 
-
+# returns the sturcture of a twoIdiots Object | return == JSON
 @request.route('/sturctureTwoIdiots', methods=['GET'])
 def guesssGuess():
     json_file_path = "website/data/twoIdiots.json"
