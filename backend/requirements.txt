@@ -1,2 +1,4 @@
 flask
 python-dotenv
+werkzeug.security
+flask_login 
