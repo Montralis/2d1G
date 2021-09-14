@@ -1,6 +1,6 @@
 # 2d1G
 
-Zwei dumme ein Gedanke und noch so ein lustiges Trinkspiel
+Repository some funny party drinking games.  The user can choose between 3 games.  A game guide is available for each game.
 
 # Flask Backend
 
@@ -16,7 +16,7 @@ pip install -r requirements.txt
 Wenns nicht geht, dann google
 
 ## Running The App
-
+Navigate in folder Backend. Type there:
 ```bash
 python main.py
 ```
