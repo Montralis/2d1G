@@ -10,92 +10,99 @@
 
     <body>
         <div x-data="data">
-            <h1 x-text="titles[modeName]"></h1>
+            <div x-show="error">
+                <h1>Es ist ein Fehler aufgetreten...</h1>
+                <pre x-text="error"></pre>
+            </div>
 
-            <template x-if="modeName === 'home'">
-                <div class="btn-container">
-                    <a class="btn"
-                       @click="modeName = 'twoIdiots';"
-                       x-text="titles.twoIdiots"
-                    ></a>
-                    <a class="btn"
-                       @click="modeName = 'guess';"
-                       x-text="titles.guess"
-                    ></a>
-                </div>
-            </template>
+            <div x-show="!error">
+                <h1 x-text="titles[modeName]"></h1>
 
-            <template x-if="modeName === 'twoIdiots'">
-                <div x-init="await loadData();">
-                    <i x-show="!twoIdiots.data.length">Lade Kategorien...</i>
+                <template x-if="modeName === 'home'">
+                    <div class="btn-container">
+                        <a class="btn"
+                           @click="modeName = 'twoIdiots';"
+                           x-text="titles.twoIdiots"
+                        ></a>
+                        <a class="btn"
+                           @click="modeName = 'guess';"
+                           x-text="titles.guess"
+                        ></a>
+                    </div>
+                </template>
 
-                    <template x-if="twoIdiots.data.length">
-                        <div>
-                            <p class="bubble"
-                               x-text="twoIdiots.data[twoIdiots.index].category"
-                            ></p>
+                <template x-if="modeName === 'twoIdiots'">
+                    <div x-init="await loadData();">
+                        <i x-show="!twoIdiots.data.length">Lade Kategorien...</i>
 
-                            <div class="btn-container">
-                                <a class="btn"
-                                   @click="incIndex();"
-                                >
-                                    Nächste Kategorie
-                                </a>
-                                <a class="btn"
-                                   @click="modeName = 'home';"
-                                >
-                                    Zurück
-                                </a>
+                        <template x-if="twoIdiots.data.length">
+                            <div>
+                                <p class="bubble"
+                                   x-text="twoIdiots.data[twoIdiots.index].category"
+                                ></p>
+
+                                <div class="btn-container">
+                                    <a class="btn"
+                                       @click="incIndex();"
+                                    >
+                                        Nächste Kategorie
+                                    </a>
+                                    <a class="btn"
+                                       @click="modeName = 'home';"
+                                    >
+                                        Zurück
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </div>
-            </template>
+                        </template>
+                    </div>
+                </template>
 
-            <template x-if="modeName === 'guess'">
-                <div x-init="await loadData();">
-                    <i x-show="!guess.data.length">Lade Schätzfragen...</i>
+                <template x-if="modeName === 'guess'">
+                    <div x-init="await loadData();">
+                        <i x-show="!guess.data.length">Lade Schätzfragen...</i>
 
-                    <template x-if="guess.data.length">
-                        <div>
-                            <p class="bubble"
-                               x-text="guess.data[guess.index].question"
-                            ></p>
-                            <p class="bubble bubble-answer"
-                               x-show="guess.answerVisible"
-                            >
-                                <b x-text="guess.data[guess.index].answer"></b>
-                            </p>
-                            <p class="bubble"
-                               x-show="guess.answerVisible"
-                            >
-                                <b>Funfact:</b>
-                                <i x-text="guess.data[guess.index].funfact"></i>
-                            </p>
-
-                            <div class="btn-container">
-                                <a class="btn"
-                                   @click="guess.answerVisible = true;"
-                                   x-show="!guess.answerVisible"
-                                >
-                                    Antwort zeigen
-                                </a>
-                                <a class="btn"
-                                   @click="guess.answerVisible = false; incIndex();"
+                        <template x-if="guess.data.length">
+                            <div>
+                                <p class="bubble"
+                                   x-text="guess.data[guess.index].question"
+                                ></p>
+                                <p class="bubble bubble-answer"
                                    x-show="guess.answerVisible"
                                 >
-                                    Nächste Schätzfrage
-                                </a>
-                                <a class="btn"
-                                   @click="modeName = 'home';"
+                                    <b x-text="guess.data[guess.index].answer"></b>
+                                </p>
+                                <p class="bubble"
+                                   x-show="guess.answerVisible"
                                 >
-                                    Zurück
-                                </a>
+                                    <b>Funfact:</b>
+                                    <i x-text="guess.data[guess.index].funfact"></i>
+                                </p>
+
+                                <div class="btn-container">
+                                    <a class="btn"
+                                       @click="guess.answerVisible = true;"
+                                       x-show="!guess.answerVisible"
+                                    >
+                                        Antwort zeigen
+                                    </a>
+                                    <a class="btn"
+                                       @click="guess.answerVisible = false; incIndex();"
+                                       x-show="guess.answerVisible"
+                                    >
+                                        Nächste Schätzfrage
+                                    </a>
+                                    <a class="btn"
+                                       @click="modeName = 'home';"
+                                    >
+                                        Zurück
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </div>
-            </template>
+                        </template>
+                    </div>
+                </template>
+            </div>
         </div>
     </body>
 </html>

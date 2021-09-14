@@ -7,6 +7,7 @@ const config = {
 };
 
 let data = {
+    error: null,
     modeName: 'home',
     titles: {
         home: 'Wähle ein Trinkspiel aus',
@@ -39,6 +40,7 @@ async function loadData() {
         mode.data = await res.json();
     } catch (err) {
         console.error(err);
+        data.error = err;
     }
 }
 
