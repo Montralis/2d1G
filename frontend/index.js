@@ -1,46 +1,53 @@
 const config = {
     backendUrl: 'http://localhost:5000',
+    endpoints: {
+        twoIdiots: 'randomTwoIdiots',
+        guess: 'randomGuess',
+    },
 };
 
-const data = {
-    mode: 'home',
+let data = {
+    modeName: 'home',
     titles: {
         home: 'Wähle ein Trinkspiel aus',
         twoIdiots: '2 Dumme 1 Gedanke',
         guess: 'Schätzfragen',
     },
     twoIdiots: {
-        categorie: null,
+        index: 0,
+        data: [],
     },
     guess: {
-        frage: null,
-        antwort: null,
+        index: 0,
         answerVisible: false,
+        data: [],
     },
 };
 
-async function fetchResult(endpoint) {
-    const url = `${config.backendUrl}/${endpoint}`;
+document.addEventListener('alpine:init', () => {
+    console.log(`Loaded Alpine.js v${Alpine.version}`);
+    data = Alpine.reactive(data);
+});
+
+async function loadData() {
+    const modeName = data.modeName;
+    const url = `${config.backendUrl}/${config.endpoints[modeName]}`;
+    const mode = data[modeName];
 
     try {
         const res = await fetch(url);
-        const json = await res.json();
-        return json.result;
+        mode.data = await res.json();
     } catch (err) {
         console.error(err);
     }
 }
 
-async function getRandCategory() {
-    const result = await fetchResult('randomTwo');
-    return result ? result : { categorie: null };
-}
+function incIndex() {
+    const mode = data[data.modeName];
 
-async function getRandSchaetzfrage() {
-    const result = await fetchResult('randomSchaetzen');
-    return result ? result : {
-        frage: null,
-        antwort: null,
-        answerVisible: false,
-    };
+    if (mode.index < mode.data.length - 1) {
+        mode.index++;
+    } else {
+        mode.index = 0;
+    }
 }

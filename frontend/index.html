@@ -1,93 +1,101 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>2 Dumme 1 Gedanke</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="index.js"></script>
-</head>
-<body>
-    <div x-data="data"
-         x-init="twoIdiots = await getRandCategory(); guess = await getRandSchaetzfrage();"
-    >
-        <h1 x-text="titles[mode]"></h1>
+    <head>
+        <meta charset="UTF-8">
+        <title>Trinkspiele</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="index.js"></script>
+        <script defer src="https://unpkg.com/alpinejs@3.3.3/dist/cdn.min.js"></script>
+    </head>
 
-        <div x-show="mode === 'home'"
-             x-transition
-        >
-            <div class="btn-container">
-                <a class="btn"
-                   @click="mode = 'twoIdiots';"
-                   x-text="titles.twoIdiots"
-                   x-show="twoIdiots.categorie"
-                   x-transition
-                ></a>
-                <a class="btn"
-                   @click="mode = 'guess';"
-                   x-text="titles.guess"
-                   x-show="guess.frage"
-                   x-transition
-                ></a>
-            </div>
+    <body>
+        <div x-data="data">
+            <h1 x-text="titles[modeName]"></h1>
+
+            <template x-if="modeName === 'home'">
+                <div class="btn-container">
+                    <a class="btn"
+                       @click="modeName = 'twoIdiots';"
+                       x-text="titles.twoIdiots"
+                    ></a>
+                    <a class="btn"
+                       @click="modeName = 'guess';"
+                       x-text="titles.guess"
+                    ></a>
+                </div>
+            </template>
+
+            <template x-if="modeName === 'twoIdiots'">
+                <div x-init="await loadData();">
+                    <i x-show="!twoIdiots.data.length">Lade Kategorien...</i>
+
+                    <template x-if="twoIdiots.data.length">
+                        <div>
+                            <p class="bubble"
+                               x-text="twoIdiots.data[twoIdiots.index].category"
+                            ></p>
+
+                            <div class="btn-container">
+                                <a class="btn"
+                                   @click="incIndex();"
+                                >
+                                    Nächste Kategorie
+                                </a>
+                                <a class="btn"
+                                   @click="modeName = 'home';"
+                                >
+                                    Zurück
+                                </a>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <template x-if="modeName === 'guess'">
+                <div x-init="await loadData();">
+                    <i x-show="!guess.data.length">Lade Schätzfragen...</i>
+
+                    <template x-if="guess.data.length">
+                        <div>
+                            <p class="bubble"
+                               x-text="guess.data[guess.index].question"
+                            ></p>
+                            <p class="bubble bubble-answer"
+                               x-show="guess.answerVisible"
+                            >
+                                <b x-text="guess.data[guess.index].answer"></b>
+                            </p>
+                            <p class="bubble"
+                               x-show="guess.answerVisible"
+                            >
+                                <b>Funfact:</b>
+                                <i x-text="guess.data[guess.index].funfact"></i>
+                            </p>
+
+                            <div class="btn-container">
+                                <a class="btn"
+                                   @click="guess.answerVisible = true;"
+                                   x-show="!guess.answerVisible"
+                                >
+                                    Antwort zeigen
+                                </a>
+                                <a class="btn"
+                                   @click="guess.answerVisible = false; incIndex();"
+                                   x-show="guess.answerVisible"
+                                >
+                                    Nächste Schätzfrage
+                                </a>
+                                <a class="btn"
+                                   @click="modeName = 'home';"
+                                >
+                                    Zurück
+                                </a>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
         </div>
-
-        <template x-if="mode === 'twoIdiots'">
-            <div>
-                <p class="bubble"
-                   x-text="twoIdiots.categorie"
-                ></p>
-
-                <div class="btn-container">
-                    <a class="btn"
-                       @click="twoIdiots = await getRandCategory()"
-                    >
-                        Nächste Kategorie
-                    </a>
-                    <a class="btn"
-                       @click="mode = 'home';"
-                    >
-                        Zurück
-                    </a>
-                </div>
-
-            </div>
-        </template>
-
-        <template x-if="mode === 'guess'">
-            <div>
-                <p class="bubble"
-                   x-text="guess.frage"
-                ></p>
-                <p class="bubble bubble-answer"
-                   x-text="guess.antwort"
-                   x-show="guess.answerVisible"
-                   x-transition
-                ></p>
-
-                <div class="btn-container">
-                    <a class="btn"
-                       @click="guess.answerVisible = true;"
-                       x-show="!guess.answerVisible"
-                       x-transition
-                    >
-                        Antwort zeigen
-                    </a>
-                    <a class="btn"
-                       @click="guess.answerVisible = false; guess = await getRandSchaetzfrage();"
-                       x-show="guess.answerVisible"
-                       x-transition
-                    >
-                        Nächste Schätzfrage
-                    </a>
-                    <a class="btn"
-                       @click="mode = 'home';"
-                    >
-                        Zurück
-                    </a>
-                </div>
-            </div>
-        </template>
-    </div>
-</body>
+    </body>
 </html>
