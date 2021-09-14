@@ -8,3 +8,7 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("index.html")
 
+@views.route('/addata', methods=['GET', 'POST'])
+@login_required
+def adddata():
+    return render_template("addata.html", user=current_user)
