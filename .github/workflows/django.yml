@@ -23,7 +23,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Switch Dir
       run: |
-        cd .\backend
+        ls
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
