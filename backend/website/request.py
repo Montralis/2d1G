@@ -117,3 +117,32 @@ def twoIdiotsStructure():
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
         return {"error" : "cannot open file"}
+
+
+# add new two idiots data to JSON
+@myrequest.route('/add-two-idiots', methods=['POST'])
+def addTwoIdiots():
+    category = request.form.get('category')
+
+    json_file_path = "website/data/two-idiots.json"
+
+    try:
+        with open(json_file_path, "r", encoding='utf-8') as f:
+            events = json.load(f)
+            event = max(events['data'], key=lambda ev: ev['id'])
+            nextId = event['id'] + 1
+
+            newTwoIdiots =  {"id":nextId, "question": category}
+            events['data'].append(newTwoIdiots)
+            try:
+                with open(json_file_path, 'w', encoding='utf-8') as fp:
+                    json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
+                    return {"success": "new two-idiots was added"}
+
+            except FileNotFoundError:
+                print("File not found. Check the path variable and filename.")
+                return {"error" : "cannot open file to write in jsonfile"}
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename.")
+        return {"error" : "cannot open file to read from json"}
