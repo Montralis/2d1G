@@ -10,15 +10,15 @@
     "data": [
         {
             "id": 1,
-            "question": "Wie hoch ist der Eifelturm ?",
-            "answer": "Der Eifelturm hat eine höhe von 324 m",
+            "question": "Wie hoch ist der Eiffelturm ?",
+            "answer": "Der Eiffelturm hat eine Höhe von 324 m",
             "funfact": "Die Aufzüge legen jährlich 103.000 Kilometer zurück, also das 2,5-fache des Erdumfangs. Der Turm galt vier Jahrzehnte lang als höchstes Gebäude der Welt und wurde erst 1930 vom New Yorker Chrysler Building überboten."
         },
         {
             "id": 2,
             "question": "Wie schwer kann eine Schönwetterwolke werden ?",
             "answer": "Schönwetterwolken sehen zwar leicht und fluffig aus, wiegen aber tatsächlich bis zu 1000 Tonnen.",
-            "funfact": "In der Meterologie wird mest zwischen 11 verschieden Wolkenarten unterschieden."
+            "funfact": "In der Meteorologie wird meist zwischen 11 verschieden Wolkenarten unterschieden."
         },
         {
             "id": 3,
@@ -35,13 +35,13 @@
         {
             "id": 5,
             "question": "Wie viele Einkerbungen hat ein Golfball ?",
-            "answer": "Ein Tounirgolfball hat genau 336 Einkerbungen.",
+            "answer": "Ein Turniergolfball hat genau 336 Einkerbungen.",
             "funfact": "Den ersten Golfschlag auf dem Mond spielte Alan Shepard (Apollo 14, 1971). Ihm gelang ein Schlag von mehr als 350 Metern Länge. Er benutzte dafür ein Eisen 6."
         },
         {
             "id": 6,
             "question": "Wie viele Liter Bier werden in Deutschland pro Kopf jährlich getrunken ?",
-            "answer": "In Deutschland werden ca. 100 Lieter Bier pro Kopf pro Jahr getrunken.",
+            "answer": "In Deutschland werden ca. 100 Liter Bier pro Kopf pro Jahr getrunken.",
             "funfact": "SUFF"
         }
     ]
