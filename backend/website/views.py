@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template 
+from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
 
@@ -9,7 +9,7 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("/base/index.html")
 
-@views.route('/addata', methods=['GET', 'POST'])
+@views.route('/add-data', methods=['GET', 'POST'])
 @login_required
-def adddata():
-    return render_template("/admin/adddata.html", user=current_user)
+def addData():
+    return render_template("/admin/add-data.html", user=current_user)
