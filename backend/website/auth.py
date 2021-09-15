@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request , redirect, url_for, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user, UserMixin
 
@@ -24,10 +24,10 @@ def login():
 
         if check_password_hash(user.hashed_password, password):
             login_user(user)
-            print('Password is correct, user is logged in.')
+            flash('Password is correct, user is logged in.')
             return redirect(url_for('views.addData'))
         else:
-            print('Incorrect password, try again.')
+            flash('Incorrect password', category='error')
 
     return render_template("/admin/login.html", user=current_user)
 

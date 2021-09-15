@@ -1,7 +1,7 @@
 import flask
 import json
 import random
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, flash,  redirect, url_for
 
 
 myrequest = Blueprint('myrequest', __name__)
@@ -69,15 +69,16 @@ def addGuess():
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
                     json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    return {"success": "new guess was added"}
+                    flash('New Guess was added', category='success')
+                    return redirect(url_for('views.addData'))
 
             except FileNotFoundError:
-                print("File not found. Check the path variable and filename.")
-                return {"error" : "cannot open file to write in jsonfile"}
+                flash("File not found. Check the path variable and filename.",  category='error')
+                return redirect(url_for('views.addData'))
 
     except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file to read from json"}
+        flash("File not found. Check the path variable and filename.",  category='error')
+        return redirect(url_for('views.addData'))
 
     
 
@@ -137,12 +138,15 @@ def addTwoIdiots():
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
                     json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    return {"success": "new two-idiots was added"}
+                    flash('New Two-Idiots was added', category='success')
+                    return redirect(url_for('views.addData'))
+
 
             except FileNotFoundError:
-                print("File not found. Check the path variable and filename.")
-                return {"error" : "cannot open file to write in jsonfile"}
+                flash("File not found. Check the path variable and filename.",  category='error')
+                return redirect(url_for('views.addData'))
 
     except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file to read from json"}
+        flash("File not found. Check the path variable and filename.",  category='error')
+        return redirect(url_for('views.addData'))
+
