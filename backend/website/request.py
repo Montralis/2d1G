@@ -80,3 +80,22 @@ def guesssGuess():
     except FileNotFoundError:
         print("File not found. Check the path variable and filename")
         return {"error" : "cant open file"}
+
+
+# add new Guess Data to Json
+@request.route('/addGuess', methods=['POST'])
+def addGuess():
+    question = request.form.get('question')
+    answer = request.form.get('answer')
+    funfact = request.form.get('funfact')
+    json_file_path = "website/data/guess.json"
+
+
+    with open(json_file_path) as f:
+        events = json.load(f)
+        event = max(events['data'], key=lambda ev: ev['id'])
+        nextId = event['id'] + 1 
+
+        print(nextId)
+
+
