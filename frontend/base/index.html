@@ -3,13 +3,15 @@
     <head>
         <meta charset="UTF-8" />
         <title>Trinkspiele</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" />
-
-        <script
-            type="text/javascript"
-            src="{{ url_for('static', filename = 'index.js') }}"
+        <link rel="stylesheet"
+              href="{{ url_for('static', filename = 'style.css') }}"
+        />
+        <script type="text/javascript"
+                src="{{ url_for('static', filename = 'index.js') }}"
         ></script>
-        <script defer src="https://unpkg.com/alpinejs@3.3.3/dist/cdn.min.js"></script>
+        <script defer
+                src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
     </head>
 
     <body>
@@ -24,12 +26,14 @@
 
                 <template x-if="modeName === 'home'">
                     <div class="btn-container">
-                        <a
-                            class="btn"
-                            @click="modeName = 'twoIdiots';"
-                            x-text="titles.twoIdiots"
+                        <a class="btn"
+                           x-text="titles.twoIdiots"
+                           @click="modeName = 'twoIdiots';"
                         ></a>
-                        <a class="btn" @click="modeName = 'guess';" x-text="titles.guess"></a>
+                        <a class="btn"
+                           x-text="titles.guess"
+                           @click="modeName = 'guess';"
+                        ></a>
                     </div>
                 </template>
 
@@ -39,14 +43,21 @@
 
                         <template x-if="twoIdiots.data.length">
                             <div>
-                                <p
-                                    class="bubble"
-                                    x-text="twoIdiots.data[twoIdiots.index].category"
+                                <p class="bubble"
+                                   x-text="twoIdiots.data[twoIdiots.index].category"
                                 ></p>
 
                                 <div class="btn-container">
-                                    <a class="btn" @click="incIndex();"> Nächste Kategorie </a>
-                                    <a class="btn" @click="modeName = 'home';"> Zurück </a>
+                                    <a class="btn"
+                                       @click="incIndex();"
+                                    >
+                                        Nächste Kategorie
+                                    </a>
+                                    <a class="btn"
+                                       @click="modeName = 'home';"
+                                    >
+                                        Zurück
+                                    </a>
                                 </div>
                             </div>
                         </template>
@@ -59,31 +70,39 @@
 
                         <template x-if="guess.data.length">
                             <div>
-                                <p class="bubble" x-text="guess.data[guess.index].question"></p>
-                                <p class="bubble bubble-answer" x-show="guess.answerVisible">
+                                <p class="bubble"
+                                   x-text="guess.data[guess.index].question"
+                                ></p>
+                                <p class="bubble bubble-answer"
+                                   x-show="guess.answerVisible"
+                                >
                                     <b x-text="guess.data[guess.index].answer"></b>
                                 </p>
-                                <p class="bubble" x-show="guess.answerVisible">
+                                <p class="bubble"
+                                   x-show="guess.answerVisible"
+                                >
                                     <b>Funfact:</b>
                                     <i x-text="guess.data[guess.index].funfact"></i>
                                 </p>
 
                                 <div class="btn-container">
-                                    <a
-                                        class="btn"
-                                        @click="guess.answerVisible = true;"
-                                        x-show="!guess.answerVisible"
+                                    <a class="btn"
+                                       x-show="!guess.answerVisible"
+                                       @click="guess.answerVisible = true;"
                                     >
                                         Antwort zeigen
                                     </a>
-                                    <a
-                                        class="btn"
-                                        @click="guess.answerVisible = false; incIndex();"
-                                        x-show="guess.answerVisible"
+                                    <a class="btn"
+                                       x-show="guess.answerVisible"
+                                       @click="guess.answerVisible = false; incIndex();"
                                     >
                                         Nächste Schätzfrage
                                     </a>
-                                    <a class="btn" @click="modeName = 'home';"> Zurück </a>
+                                    <a class="btn"
+                                       @click="modeName = 'home';"
+                                    >
+                                        Zurück
+                                    </a>
                                 </div>
                             </div>
                         </template>
