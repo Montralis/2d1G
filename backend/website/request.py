@@ -62,7 +62,7 @@ def addGuess():
     with open(json_file_path) as f:
         events = json.load(f)
         event = max(events['data'], key=lambda ev: ev['id'])
-        nextId = event['id'] + 1 
+        nextId = event['id'] + 1
 
         print(nextId)
 
@@ -72,7 +72,7 @@ def addGuess():
 # returns a shuffled list of twoIdiots questions | return == array
 @request.route('/two-idiots', methods=['GET'])
 def twoIdiots():
-    json_file_path = "website/data/twoIdiots.json"
+    json_file_path = "website/data/two-idiots.json"
 
     try:
         with open(json_file_path, "r") as f:
@@ -90,7 +90,7 @@ def twoIdiots():
 # returns the structure of a twoIdiots object | return == JSON
 @request.route('/two-idiots/structure', methods=['GET'])
 def twoIdiotsStructure():
-    json_file_path = "website/data/twoIdiots.json"
+    json_file_path = "website/data/two-idiots.json"
 
     try:
         with open(json_file_path, "r") as f:
