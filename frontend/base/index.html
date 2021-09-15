@@ -25,15 +25,62 @@
                 <h1 x-text="titles[modeName]"></h1>
 
                 <template x-if="modeName === 'home'">
-                    <div class="btn-container">
-                        <a class="btn"
-                           x-text="titles.twoIdiots"
-                           @click="modeName = 'twoIdiots';"
-                        ></a>
-                        <a class="btn"
-                           x-text="titles.guess"
-                           @click="modeName = 'guess';"
-                        ></a>
+                    <div>
+                        <div class="btn-container">
+                            <a class="btn"
+                               x-text="titles.twoIdiots"
+                               @click="modeName = 'twoIdiots';"
+                            ></a>
+                            <a class="btn"
+                               x-text="titles.guess"
+                               @click="modeName = 'guess';"
+                            ></a>
+                        </div>
+
+                        <div class="btn-container">
+                            <a class="btn"
+                               x-text="titles.about"
+                               @click="modeName = 'about';"
+                            ></a>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="modeName === 'about'">
+                    <div x-init="await loadData();">
+                        <i x-show="!about.data.length">Lade Informationen...</i>
+
+                        <template x-if="about.data.length">
+                            <div>
+                                <p class="bubble">
+                                    Entwickelt von Leon Thomanek und Luca Feigl in Darmstadt.
+                                </p>
+                                <p class="bubble bubble-answer">
+                                    Wir verwenden:
+                                    <br />
+                                    Alpine.js v<span x-text="Alpine.version"></span>
+                                    <i>(Frontend, Luca Feigl)</i>
+                                    <br />
+                                    Flask v<span x-text="about.data"></span>
+                                    <i>(Backend, Leon Thomanek)</i>
+                                    <br />
+                                    <br />
+                                    © <span x-text="new Date().getFullYear()"></span>
+                                </p>
+
+                                <div class="btn-container">
+                                    <a class="btn"
+                                       x-text="titles.addData"
+                                       @click="window.location.href = '/add-data';"
+                                    ></a>
+                                    <a class="btn"
+                                       @click="modeName = 'home';"
+                                    >
+                                        Zurück
+                                    </a>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </template>
 

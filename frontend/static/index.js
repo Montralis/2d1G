@@ -1,8 +1,9 @@
 const config = {
     backendUrl: 'http://localhost:5000',
     endpoints: {
-        twoIdiots: 'randomTwoIdiots',
-        guess: 'randomGuess',
+        about: 'version',
+        twoIdiots: 'two-idiots',
+        guess: 'guess',
     },
 };
 
@@ -11,8 +12,13 @@ let data = {
     modeName: 'home',
     titles: {
         home: 'Wähle ein Trinkspiel aus',
+        about: 'Über diese Seite',
+        addData: 'Neue Daten hinzufügen',
         twoIdiots: '2 Dumme 1 Gedanke',
         guess: 'Schätzfragen',
+    },
+    about: {
+        data: '',
     },
     twoIdiots: {
         index: 0,
