@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, send_from_directory
 from dotenv import load_dotenv
 from flask_login import LoginManager
 
@@ -7,10 +7,14 @@ def create_app():
     load_dotenv()
 
     template_dir = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-    template_dir = os.path.join(template_dir, 'frontend')
+    frontend_dir = os.path.join(template_dir, 'frontend')
+    static_dir = os.path.join(frontend_dir, 'static')
 
-    app = Flask(__name__, template_folder = template_dir)
+    print(static_dir)
+
+    app = Flask(__name__, static_url_path='', static_folder = static_dir, template_folder = frontend_dir)
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
 
 
     from .views import views
