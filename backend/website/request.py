@@ -1,14 +1,14 @@
 import flask
 import json
 import random
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 
-request = Blueprint('request', __name__)
+myrequest = Blueprint('myrequest', __name__)
 
 
 # returns the Flask version
-@request.route('/version', methods=['GET'])
+@myrequest.route('/version', methods=['GET'])
 def version():
     return jsonify(flask.__version__)
 
@@ -16,7 +16,7 @@ def version():
 # routes for game: Guess
 
 # returns a shuffled list of guess questions | return == array
-@request.route('/guess', methods=['GET'])
+@myrequest.route('/guess', methods=['GET'])
 def guess():
     json_file_path = "website/data/guess.json"
 
@@ -34,7 +34,7 @@ def guess():
 
 
 # returns the structure of a guess object | return == JSON
-@request.route('/guess/structure', methods=['GET'])
+@myrequest.route('/guess/structure', methods=['GET'])
 def guessStructure():
     json_file_path = "website/data/guess.json"
 
@@ -51,26 +51,41 @@ def guessStructure():
 
 
 # add new guess data to JSON
-@request.route('/add-guess', methods=['POST'])
+@myrequest.route('/add-guess', methods=['POST'])
 def addGuess():
-    question = request.args.get('question')
-    answer = request.args.get('answer')
-    funfact = request.args.get('funfact')
+    question = request.form.get('question')
+    answer = request.form.get('answer')
+    funfact = request.form.get('funfact')
     json_file_path = "website/data/guess.json"
 
+    try:
+        with open(json_file_path, "r") as f:
+            events = json.load(f)
+            event = max(events['data'], key=lambda ev: ev['id'])
+            nextId = event['id'] + 1
 
-    with open(json_file_path) as f:
-        events = json.load(f)
-        event = max(events['data'], key=lambda ev: ev['id'])
-        nextId = event['id'] + 1
+            newGuess =  {"id":nextId, "question": question, "answer":answer, "funfact":funfact}
+            events['data'].append(newGuess)
+            try:
+                with open(json_file_path, 'w') as fp:
+                    json.dump(events, fp, sort_keys=True, indent=4)
+                    return {"success": "new guess was added"}
 
-        print(nextId)
+            except FileNotFoundError:
+                print("File not found. Check the path variable and filename.")
+                return {"error" : "cannot open file to write in jsonfile"}
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename.")
+        return {"error" : "cannot open file to read from json"}
+
+    
 
 
 # routes for game: TwoIdiots
 
 # returns a shuffled list of twoIdiots questions | return == array
-@request.route('/two-idiots', methods=['GET'])
+@myrequest.route('/two-idiots', methods=['GET'])
 def twoIdiots():
     json_file_path = "website/data/two-idiots.json"
 
@@ -88,7 +103,7 @@ def twoIdiots():
 
 
 # returns the structure of a twoIdiots object | return == JSON
-@request.route('/two-idiots/structure', methods=['GET'])
+@myrequest.route('/two-idiots/structure', methods=['GET'])
 def twoIdiotsStructure():
     json_file_path = "website/data/two-idiots.json"
 

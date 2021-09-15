@@ -18,11 +18,11 @@ def create_app():
 
 
     from .views import views
-    from .request import request
+    from .request import myrequest
     from .auth import auth
 
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(request, url_prefix='/')
+    app.register_blueprint(myrequest, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
 
