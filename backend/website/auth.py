@@ -1,27 +1,36 @@
+import os
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from werkzeug.security import check_password_hash
-from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask_login import login_user, login_required, logout_user, current_user, UserMixin
 
 
 auth = Blueprint('auth', __name__)
 
-hashed_password = 'c4b991b74c38acc0b4d0a145d7d0949c64af3abd3e8d29acd8cd7010ce0bb4a3'
+# Singelton User Design for Login
+class User(UserMixin):
+    id = 1
+
+    def __init__(self, user_password):
+        pass
+        self.hashed_password = generate_password_hash(user_password)
+  
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         password = request.form.get('password')
+        user = User(os.getenv('USER_PASSWORD'))
 
-        if check_password_hash(hashed_password, password):
-            flash('Logged in successfully!', category='success')
-            login_user({'password': hashed_password}, remember=True)
+
+        if check_password_hash(user.hashed_password, password):
+            login_user(user)
+            print('Password is correct, user is logged in')
             return redirect(url_for('views.adddata'))
         else:
-            flash('Incorrect password, try again.', category='error')
-    else:
-        flash('Email does not exist.', category='error')
+            print('Incorrect password, try again.')
 
-    return render_template("login.html", user=current_user)
+    return render_template("/admin/login.html", user=current_user)
 
   
 @auth.route('/logout')
