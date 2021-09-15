@@ -1,5 +1,4 @@
 const config = {
-    backendUrl: 'http://localhost:5000',
     endpoints: {
         about: 'version',
         twoIdiots: 'two-idiots',
@@ -38,7 +37,7 @@ document.addEventListener('alpine:init', () => {
 
 async function loadData() {
     const modeName = data.modeName;
-    const url = `${config.backendUrl}/${config.endpoints[modeName]}`;
+    const url = `/${config.endpoints[modeName]}`;
     const mode = data[modeName];
 
     try {
