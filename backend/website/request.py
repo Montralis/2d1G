@@ -1,7 +1,6 @@
 import flask
 import json
 import random
-from os import path
 from flask import Blueprint, jsonify
 
 
@@ -54,9 +53,9 @@ def guessStructure():
 # add new guess data to JSON
 @request.route('/add-guess', methods=['POST'])
 def addGuess():
-    question = request.form.get('question')
-    answer = request.form.get('answer')
-    funfact = request.form.get('funfact')
+    question = request.args.get('question')
+    answer = request.args.get('answer')
+    funfact = request.args.get('funfact')
     json_file_path = "website/data/guess.json"
 
 
