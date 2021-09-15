@@ -1,7 +1,7 @@
 {
     "name": "guess",
     "type": "json",
-    "objectStructur": {
+    "objectStructure": {
         "id": "int",
         "question": "string",
         "answer": "string",

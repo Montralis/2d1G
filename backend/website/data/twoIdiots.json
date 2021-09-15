@@ -1,7 +1,10 @@
 {
     "name": "twoIdiots",
     "type": "json",
-    "objectStructur": { "id": "int", "category": "string" },
+    "objectStructure": {
+        "id": "int",
+        "category": "string"
+    },
     "data": [
         {
             "id": 1,

@@ -6,14 +6,14 @@ from flask_login import login_user, login_required, logout_user, current_user, U
 
 auth = Blueprint('auth', __name__)
 
-# Singelton User Design for Login
+
+# Singleton user design for login
 class User(UserMixin):
     id = 1
 
     def __init__(self, user_password):
         pass
         self.hashed_password = generate_password_hash(user_password)
-  
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -22,17 +22,16 @@ def login():
         password = request.form.get('password')
         user = User(os.getenv('USER_PASSWORD'))
 
-
         if check_password_hash(user.hashed_password, password):
             login_user(user)
-            print('Password is correct, user is logged in')
-            return redirect(url_for('views.adddata'))
+            print('Password is correct, user is logged in.')
+            return redirect(url_for('views.addData'))
         else:
             print('Incorrect password, try again.')
 
     return render_template("/admin/login.html", user=current_user)
 
-  
+
 @auth.route('/logout')
 @login_required
 def logout():

@@ -17,28 +17,25 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
-
     from .views import views
     from .request import request
     from .auth import auth
-    
+
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(request, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
-    
 
-    # loginmanager for add data 
+
+    # login manager for add data
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
 
-    
-    # login User for add data 
+    # login user for add data
     @login_manager.user_loader
     def load_user(id):
         return User(os.getenv('USER_PASSWORD'))
 
 
     return app
-
