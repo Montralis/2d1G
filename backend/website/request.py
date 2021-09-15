@@ -51,6 +51,23 @@ def guessStructure():
         return {"error" : "cannot open file"}
 
 
+# add new guess data to JSON
+@request.route('/add-guess', methods=['POST'])
+def addGuess():
+    question = request.form.get('question')
+    answer = request.form.get('answer')
+    funfact = request.form.get('funfact')
+    json_file_path = "website/data/guess.json"
+
+
+    with open(json_file_path) as f:
+        events = json.load(f)
+        event = max(events['data'], key=lambda ev: ev['id'])
+        nextId = event['id'] + 1 
+
+        print(nextId)
+
+
 # routes for game: TwoIdiots
 
 # returns a shuffled list of twoIdiots questions | return == array
