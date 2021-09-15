@@ -12,4 +12,4 @@ def home():
 @views.route('/addata', methods=['GET', 'POST'])
 @login_required
 def adddata():
-    return render_template("addata.html", user=current_user)
+    return render_template("/admin/adddata.html", user=current_user)

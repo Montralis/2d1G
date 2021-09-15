@@ -1,3 +1,4 @@
+from .auth import User
 import os
 from flask import Flask, send_from_directory
 from dotenv import load_dotenv
@@ -25,14 +26,17 @@ def create_app():
     app.register_blueprint(request, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     
+
+    # loginmanager for add data 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
     
+    # login User for add data 
     @login_manager.user_loader
     def load_user(id):
-        return True
+        return User(os.getenv('USER_PASSWORD'))
 
 
     return app
