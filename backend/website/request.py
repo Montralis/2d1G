@@ -21,7 +21,7 @@ def guess():
     json_file_path = "website/data/guess.json"
 
     try:
-        with open(json_file_path, "r") as f:
+        with open(json_file_path, "r", encoding='utf-8') as f:
             guessJson = json.loads(f.read())
             dataDict = guessJson["data"]
             random.shuffle(dataDict)
@@ -39,7 +39,7 @@ def guessStructure():
     json_file_path = "website/data/guess.json"
 
     try:
-        with open(json_file_path, "r") as f:
+        with open(json_file_path, "r", encoding='utf-8') as f:
             guessJson = json.loads(f.read())
             dataDict = guessJson["objectStructure"]
 
@@ -59,7 +59,7 @@ def addGuess():
     json_file_path = "website/data/guess.json"
 
     try:
-        with open(json_file_path, "r") as f:
+        with open(json_file_path, "r", encoding='utf-8') as f:
             events = json.load(f)
             event = max(events['data'], key=lambda ev: ev['id'])
             nextId = event['id'] + 1
@@ -67,8 +67,8 @@ def addGuess():
             newGuess =  {"id":nextId, "question": question, "answer":answer, "funfact":funfact}
             events['data'].append(newGuess)
             try:
-                with open(json_file_path, 'w') as fp:
-                    json.dump(events, fp, sort_keys=True, indent=4)
+                with open(json_file_path, 'w', encoding='utf-8') as fp:
+                    json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
                     return {"success": "new guess was added"}
 
             except FileNotFoundError:
@@ -90,7 +90,7 @@ def twoIdiots():
     json_file_path = "website/data/two-idiots.json"
 
     try:
-        with open(json_file_path, "r") as f:
+        with open(json_file_path, "r", encoding='utf-8') as f:
             guessJson = json.loads(f.read())
             dataDict = guessJson["data"]
             random.shuffle(dataDict)
@@ -108,7 +108,7 @@ def twoIdiotsStructure():
     json_file_path = "website/data/two-idiots.json"
 
     try:
-        with open(json_file_path, "r") as f:
+        with open(json_file_path, "r", encoding='utf-8') as f:
             guessJson = json.loads(f.read())
             dataDict = guessJson["objectStructure"]
 
