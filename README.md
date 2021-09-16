@@ -1,4 +1,5 @@
 [![Python application build test](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml/badge.svg?branch=add-tests)](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml)
+[![Python CodeCov test](https://github.com/Montralis/2d1G/actions/workflows/codeCov.yml/badge.svg?branch=add-tests)](https://github.com/Montralis/2d1G/actions/workflows/codeCov.yml)
 # 2d1G
 
 Repository some funny party drinking games.  The user can choose between 3 games.  A game guide is available for each game.
