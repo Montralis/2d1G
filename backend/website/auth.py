@@ -24,10 +24,10 @@ def login():
 
         if check_password_hash(user.hashed_password, password):
             login_user(user)
-            flash('Password is correct, user is logged in.')
+            flash('You are now logged in.')
             return redirect(url_for('views.addData'))
         else:
-            flash('Incorrect password', category='error')
+            flash('Incorrect password, please try again.', category='error')
 
     return render_template("/admin/login.html", user=current_user)
 
