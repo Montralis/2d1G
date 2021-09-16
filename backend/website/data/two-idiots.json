@@ -1,30 +1,30 @@
 {
-    "name": "twoIdiots",
-    "type": "json",
-    "objectStructure": {
-        "id": "int",
-        "category": "string"
-    },
     "data": [
         {
-            "id": 1,
-            "category": "Automarke"
+            "category": "Automarke",
+            "id": 1
         },
         {
-            "id": 2,
-            "category": "Farbe"
+            "category": "Farbe",
+            "id": 2
         },
         {
-            "id": 3,
-            "category": "Eissorte"
+            "category": "Eissorte",
+            "id": 3
         },
         {
-            "id": 4,
-            "category": "K.I.Z Lied"
+            "category": "K.I.Z Lied",
+            "id": 4
         },
         {
-            "id": 5,
-            "category": "Handymarke"
+            "category": "Handymarke",
+            "id": 5
         }
-    ]
+    ],
+    "name": "twoIdiots",
+    "objectStructure": {
+        "category": "string",
+        "id": "int"
+    },
+    "type": "json"
 }
