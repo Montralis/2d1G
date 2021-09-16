@@ -1,9 +1,7 @@
-const config = {
-    endpoints: {
-        about: 'version',
-        twoIdiots: 'two-idiots',
-        guess: 'guess',
-    },
+const endpoints = {
+    about: 'version',
+    twoIdiots: 'two-idiots',
+    guess: 'guess',
 };
 
 let data = {
@@ -37,11 +35,10 @@ document.addEventListener('alpine:init', () => {
 
 async function loadData() {
     const modeName = data.modeName;
-    const url = `/${config.endpoints[modeName]}`;
     const mode = data[modeName];
 
     try {
-        const res = await fetch(url);
+        const res = await fetch(`/${endpoints[modeName]}`);
         mode.data = await res.json();
     } catch (err) {
         console.error(err);
@@ -51,10 +48,5 @@ async function loadData() {
 
 function incIndex() {
     const mode = data[data.modeName];
-
-    if (mode.index < mode.data.length - 1) {
-        mode.index++;
-    } else {
-        mode.index = 0;
-    }
+    mode.index = mode.index < mode.data.length - 1 ? mode.index + 1 : 0;
 }
