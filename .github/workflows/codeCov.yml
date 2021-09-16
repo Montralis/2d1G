@@ -14,4 +14,6 @@ jobs:
     - name: Generate Report
       run: |
         pip install coverage
-        coverage run -m unittest
+        pytest --cov func --cov-branch --cov-report term-missing
+        
+   
