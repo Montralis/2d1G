@@ -1,19 +1,30 @@
-name: CodeCov
-on: [push, pull_request]
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+
+name: Python application build test
+
+on:
+  push:
+    branches: [ main, add-tests ]
+  pull_request:
+    branches: [ main, add-tests ]
+
 jobs:
-  run:
+  build:
+
     runs-on: ubuntu-latest
-    env:
-      OS: ubuntu-latest
-      PYTHON: '3.9'
+
     steps:
-    - name: Setup Python
-      uses: actions/setup-python@master
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
       with:
-        python-version: 3.7
-    - name: Generate Report
+        python-version: 3.9
+    - name: Install dependencies
       run: |
-        pip install coverage
+        cd backend
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Test with pytest
+      run: |
         pytest --cov func --cov-branch --cov-report term-missing
-        
-   
