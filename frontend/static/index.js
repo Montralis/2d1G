@@ -1,21 +1,21 @@
 const endpoints = {
-    about: 'version',
-    twoIdiots: 'two-idiots',
-    guess: 'guess',
+    about: "version",
+    twoIdiots: "two-idiots",
+    guess: "guess",
 };
 
 let data = {
     error: null,
-    modeName: 'home',
+    modeName: "home",
     titles: {
-        home: 'Wähle ein Trinkspiel aus',
-        about: 'Über diese Seite',
-        addData: 'Neue Daten hinzufügen',
-        twoIdiots: '2 Dumme 1 Gedanke',
-        guess: 'Schätzfragen',
+        home: "Wähle ein Trinkspiel aus",
+        about: "Über diese Seite",
+        addData: "Neue Daten hinzufügen",
+        twoIdiots: "2 Dumme 1 Gedanke",
+        guess: "Schätzfragen",
     },
     about: {
-        data: '',
+        data: "",
     },
     twoIdiots: {
         index: 0,
@@ -28,7 +28,7 @@ let data = {
     },
 };
 
-document.addEventListener('alpine:init', () => {
+document.addEventListener("alpine:init", () => {
     console.log(`Loaded Alpine.js v${Alpine.version}`);
     data = Alpine.reactive(data);
 });
@@ -38,6 +38,7 @@ async function loadData() {
     const mode = data[modeName];
 
     try {
+        console.log("try to fetch", `/${endpoints[modeName]}`);
         const res = await fetch(`/${endpoints[modeName]}`);
         mode.data = await res.json();
     } catch (err) {
