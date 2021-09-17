@@ -1,21 +1,21 @@
 const endpoints = {
-    about: "version",
-    twoIdiots: "two-idiots",
-    guess: "guess",
+    about: 'version',
+    twoIdiots: 'two-idiots',
+    guess: 'guess',
 };
 
 let data = {
     error: null,
-    modeName: "home",
+    modeName: 'home',
     titles: {
-        home: "Wähle ein Trinkspiel aus",
-        about: "Über diese Seite",
-        addData: "Neue Daten hinzufügen",
-        twoIdiots: "2 Dumme 1 Gedanke",
-        guess: "Schätzfragen",
+        home: 'Wähle ein Trinkspiel aus',
+        about: 'Über diese Seite',
+        addData: 'Neue Daten hinzufügen',
+        twoIdiots: '2 Dumme 1 Gedanke',
+        guess: 'Schätzfragen',
     },
     about: {
-        data: "",
+        data: '',
     },
     twoIdiots: {
         index: 0,
@@ -28,7 +28,7 @@ let data = {
     },
 };
 
-document.addEventListener("alpine:init", () => {
+document.addEventListener('alpine:init', () => {
     console.log(`Loaded Alpine.js v${Alpine.version}`);
     data = Alpine.reactive(data);
 });
@@ -36,15 +36,27 @@ document.addEventListener("alpine:init", () => {
 async function loadData() {
     const modeName = data.modeName;
     const mode = data[modeName];
+    const endpoint = `/${endpoints[modeName]}`;
 
     try {
-        console.log("try to fetch", `/${endpoints[modeName]}`);
-        const res = await fetch(`/${endpoints[modeName]}`);
-        mode.data = await res.json();
+        console.log(`Trying to fetch "${endpoint}"...`);
+        const res = await fetch(endpoint);
+        const json = await res.json();
+
+        if (json.error) {
+            handleError(json.error);
+        } else {
+            mode.data = json;
+        }
     } catch (err) {
         console.error(err);
         data.error = err;
     }
+}
+
+function handleError(error) {
+    console.error(error);
+    data.error = error;
 }
 
 function incIndex() {
