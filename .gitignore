@@ -1,6 +1,32 @@
+### IDE ###
 .idea
 .vscode
 
-# cache
+### cache ###
 __pycache__
 *.pyc
+
+### dotenv ###
+.env
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
