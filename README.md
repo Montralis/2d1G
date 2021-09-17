@@ -1,5 +1,5 @@
-
-[![Python application build test](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml/badge.svg?branch=prod)](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml)
+[![Python application build test](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml/badge.svg?branch=add-tests)](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml)
+[![Python CodeCov test](https://github.com/Montralis/2d1G/actions/workflows/codeCov.yml/badge.svg?branch=add-tests)](https://github.com/Montralis/2d1G/actions/workflows/codeCov.yml)
 
 # 2d1G
 
