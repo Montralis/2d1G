@@ -1,5 +1,5 @@
 
-[![Python application build test](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml/badge.svg)](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml)
+[![Python application build test](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml/badge.svg?branch=prod)](https://github.com/Montralis/2d1G/actions/workflows/python-app.yml)
 
 # 2d1G
 
