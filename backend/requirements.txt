@@ -1,5 +1,5 @@
 flask
-python-dotenv
-werkzeug
 flask_login
+python-dotenv
 waitress
+werkzeug
