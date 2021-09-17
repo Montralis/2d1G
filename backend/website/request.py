@@ -153,3 +153,74 @@ def addTwoIdiots():
     except FileNotFoundError:
         flash("File not found. Check the path variable and filename.",  category='error')
         return redirect(url_for('views.addData'))
+
+
+
+# --------------------------------------------------------------------------------------------------
+
+# routes for game: Different Word
+
+# returns a shuffled list of Two Idiots categories | return == array
+@myrequest.route('/different-word', methods=['GET'])
+def twoIdiots():
+    json_file_path = "/app/backend/website/data/different-word.json"
+
+    try:
+        with open(json_file_path, "r", encoding='utf-8') as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["data"]
+            random.shuffle(dataDict)
+
+            return jsonify(dataDict)
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename.")
+        return {"error" : "cannot open file"}
+
+
+# returns the structure of a Two Idiots object | return == JSON
+@myrequest.route('/different-word/structure', methods=['GET'])
+def twoIdiotsStructure():
+    json_file_path = "/app/backend/website/data/different-word.json"
+
+    try:
+        with open(json_file_path, "r", encoding='utf-8') as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["objectStructure"]
+
+            return jsonify(dataDict)
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename.")
+        return {"error" : "cannot open file"}
+
+
+# add new Two Idiots data to JSON
+@myrequest.route('/different-word/add', methods=['POST'])
+def addTwoIdiots():
+    category = request.form.get('category')
+
+    json_file_path = "/app/backend/website/data/different-word.json"
+
+    try:
+        with open(json_file_path, "r", encoding='utf-8') as f:
+            events = json.load(f)
+            event = max(events['data'], key=lambda ev: ev['id'])
+            nextId = event['id'] + 1
+
+            newTwoIdiots =  {"id": nextId, "category": category}
+            events['data'].append(newTwoIdiots)
+            try:
+                with open(json_file_path, 'w', encoding='utf-8') as fp:
+                    json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
+                    flash('New Two Idiots category was added.', category='success')
+                    return redirect(url_for('views.addData'))
+
+
+            except FileNotFoundError:
+                flash("File not found. Check the path variable and filename.",  category='error')
+                return redirect(url_for('views.addData'))
+
+    except FileNotFoundError:
+        flash("File not found. Check the path variable and filename.",  category='error')
+        return redirect(url_for('views.addData'))
