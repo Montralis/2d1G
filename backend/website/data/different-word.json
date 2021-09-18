@@ -1,0 +1,36 @@
+{
+    "data": [
+        {
+            "different": "Auto",
+            "wanted": "KFZ",
+            "id": 1
+        },
+        {
+            "different": "Haus",
+            "wanted": "Immobilie",
+            "id": 2
+        },
+        {
+            "different": "Blume",
+            "wanted": "Pflanze",
+            "id": 3
+        },
+        {
+            "different": "Essen",
+            "wanted": "Nahrung",
+            "id": 4
+        },
+        {
+            "different": "Geld",
+            "wanted": "Währung",
+            "id": 5
+        }
+    ],
+    "name": "twoIdiots",
+    "objectStructure": {
+        "different": "string",
+        "wanted": "string",
+        "id": "int"
+    },
+    "type": "json"
+}
