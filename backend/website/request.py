@@ -2,7 +2,7 @@ import flask
 import json
 import random
 from flask import Blueprint, jsonify, request, flash,  redirect, url_for
-
+import serverconf as cnf
 
 myrequest = Blueprint('myrequest', __name__)
 
@@ -22,7 +22,7 @@ def version():
 # returns a shuffled list of Guess questions | return == array
 @myrequest.route('/guess', methods=['GET'])
 def guess():
-    json_file_path = "/app/backend/website/data/guess.json"
+    json_file_path = "website/data/guess.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -40,7 +40,7 @@ def guess():
 # returns the structure of a Guess object | return == JSON
 @myrequest.route('/guess/structure', methods=['GET'])
 def guessStructure():
-    json_file_path = "/app/backend/website/data/guess.json"
+    json_file_path = "website/data/guess.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -60,7 +60,7 @@ def addGuess():
     question = request.form.get('question')
     answer = request.form.get('answer')
     funfact = request.form.get('funfact')
-    json_file_path = "/app/backend/website/data/guess.json"
+    json_file_path = "website/data/guess.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -92,7 +92,7 @@ def addGuess():
 # returns a shuffled list of Two Idiots categories | return == array
 @myrequest.route('/two-idiots', methods=['GET'])
 def twoIdiots():
-    json_file_path = "/app/backend/website/data/two-idiots.json"
+    json_file_path = "website/data/two-idiots.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -110,7 +110,7 @@ def twoIdiots():
 # returns the structure of a Two Idiots object | return == JSON
 @myrequest.route('/two-idiots/structure', methods=['GET'])
 def twoIdiotsStructure():
-    json_file_path = "/app/backend/website/data/two-idiots.json"
+    json_file_path = "website/data/two-idiots.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -129,7 +129,7 @@ def twoIdiotsStructure():
 def addTwoIdiots():
     category = request.form.get('category')
 
-    json_file_path = "/app/backend/website/data/two-idiots.json"
+    json_file_path = "website/data/two-idiots.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -162,8 +162,8 @@ def addTwoIdiots():
 
 # returns a shuffled list of Two Idiots categories | return == array
 @myrequest.route('/different-word', methods=['GET'])
-def twoIdiots():
-    json_file_path = "/app/backend/website/data/different-word.json"
+def differentWord():
+    json_file_path = "website/data/different-word.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -180,8 +180,8 @@ def twoIdiots():
 
 # returns the structure of a Two Idiots object | return == JSON
 @myrequest.route('/different-word/structure', methods=['GET'])
-def twoIdiotsStructure():
-    json_file_path = "/app/backend/website/data/different-word.json"
+def differentWordStructure():
+    json_file_path = "website/data/different-word.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -197,10 +197,10 @@ def twoIdiotsStructure():
 
 # add new Two Idiots data to JSON
 @myrequest.route('/different-word/add', methods=['POST'])
-def addTwoIdiots():
+def addDifferentWord():
     category = request.form.get('category')
 
-    json_file_path = "/app/backend/website/data/different-word.json"
+    json_file_path = "website/data/different-word.json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
