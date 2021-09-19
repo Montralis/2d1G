@@ -1,5 +1,4 @@
 import os
-
 import flask
 import json
 import random
@@ -7,7 +6,7 @@ from flask import Blueprint, jsonify, request, flash, redirect, url_for
 
 myrequest = Blueprint('myrequest', __name__)
 
-
+# --------------------------------------------------------------------------------------------------
 # common routes
 
 # returns the Flask version
@@ -17,43 +16,7 @@ def version():
 
 
 # --------------------------------------------------------------------------------------------------
-
-# routes for game: Guess
-
-# returns a shuffled list of Guess questions | return == array
-@myrequest.route('/guess', methods=['GET'])
-def guess():
-    json_file_path = "website/data/guess.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["data"]
-            random.shuffle(dataDict)
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
-
-
-# returns the structure of a Guess object | return == JSON
-@myrequest.route('/guess/structure', methods=['GET'])
-def guessStructure():
-    json_file_path = "website/data/guess.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["objectStructure"]
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
-
+# API for adding Data to JSON files
 
 # add new Guess data to JSON
 @myrequest.route('/guess/add', methods=['POST'])
@@ -84,45 +47,6 @@ def addGuess():
     except FileNotFoundError:
         flash("File not found. Check the path variable and filename.", category='error')
         return redirect(url_for('views.addData'))
-
-
-# --------------------------------------------------------------------------------------------------
-
-# routes for game: Two Idiots
-
-# returns a shuffled list of Two Idiots categories | return == array
-@myrequest.route('/two-idiots', methods=['GET'])
-def twoIdiots():
-    json_file_path = "website/data/two-idiots.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["data"]
-            random.shuffle(dataDict)
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
-
-
-# returns the structure of a Two Idiots object | return == JSON
-@myrequest.route('/two-idiots/structure', methods=['GET'])
-def twoIdiotsStructure():
-    json_file_path = "website/data/two-idiots.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["objectStructure"]
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
 
 
 # add new Two Idiots data to JSON
@@ -156,45 +80,6 @@ def addTwoIdiots():
         return redirect(url_for('views.addData'))
 
 
-# --------------------------------------------------------------------------------------------------
-
-# routes for game: Different Word
-
-# returns a shuffled list of Two Idiots categories | return == array
-@myrequest.route('/different-word', methods=['GET'])
-def differentWord():
-    json_file_path = "website/data/different-word.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["data"]
-            random.shuffle(dataDict)
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
-
-
-# returns the structure of a Two Idiots object | return == JSON
-@myrequest.route('/different-word/structure', methods=['GET'])
-def differentWordStructure():
-    json_file_path = "website/data/different-word.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["objectStructure"]
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
-
-
 # add new Two Idiots data to JSON
 @myrequest.route('/different-word/add', methods=['POST'])
 def addDifferentWord():
@@ -226,24 +111,54 @@ def addDifferentWord():
         return redirect(url_for('views.addData'))
 
 
-# test for redesign backend
 
+# ------------------------------------------------------------------
 
-# returns a shuffled list of Guess questions | return == array
-@myrequest.route('/game-data/<game>', methods=['GET'])
+# returns a shuffled list of game questions | return == array
+@myrequest.route('/game/<game>', methods=['GET'])
 def gameData(game):
-    json_file_path = "test"
-    if os.getenv('MODUS') == "def":
-        file_path = "/website/data/"
+
+    # development server, use file directly 
+    if os.getenv('MODUS') == "dev":
+        file_path = "website/data/"
         json_file_path = file_path + game + ".json"
 
-    print(json_file_path)
+    # production server, use files from docker directory 
+    elif os.getenv('MODUS') == "prod":
+        file_path = "/app/backend/website/data/"
+        json_file_path = file_path + game + ".json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
             guessJson = json.loads(f.read())
             dataDict = guessJson["data"]
             random.shuffle(dataDict)
+
+            return jsonify(dataDict)
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename.")
+        return {"error": "cannot open file"}
+
+
+# returns the structure of a Guess object | return == JSON
+@myrequest.route('/structure/<game>', methods=['GET'])
+def gameStructure(game):
+
+    # development server, use file directly 
+    if os.getenv('MODUS') == "dev":
+        file_path = "website/data/"
+        json_file_path = file_path + game + ".json"
+
+    # production server, use files from docker directory 
+    elif os.getenv('MODUS') == "prod":
+        file_path = "/app/backend/website/data/"
+        json_file_path = file_path + game + ".json"
+
+    try:
+        with open(json_file_path, "r", encoding='utf-8') as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["objectStructure"]
 
             return jsonify(dataDict)
 
