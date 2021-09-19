@@ -10,7 +10,7 @@ myrequest = Blueprint('myrequest', __name__)
 
 
 config = configparser.RawConfigParser()
-config.read(os.path.join(os.path.dirname(__file__), 'backend', 'serverconf.cfg'))
+config.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'serverconf.cfg'))
 print(config.get('SERVER', 'modus'))
 # --------------------------------------------------------------------------------------------------
 # common routes
@@ -125,12 +125,12 @@ def addDifferentWord():
 def gameData(game):
 
     # development server, use file directly 
-    if os.getenv('MODUS') == "dev":
+    if config.get('SERVER', 'modus') == "dev":
         file_path = "website/data/"
         json_file_path = file_path + game + ".json"
 
     # production server, use files from docker directory 
-    elif os.getenv('MODUS') == "prod":
+    elif config.get('SERVER', 'modus') == "prod":
         file_path = "/app/backend/website/data/"
         json_file_path = file_path + game + ".json"
 
@@ -152,12 +152,12 @@ def gameData(game):
 def gameStructure(game):
 
     # development server, use file directly 
-    if os.getenv('MODUS') == "dev":
+    if config.get('SERVER', 'modus') == "dev":
         file_path = "website/data/"
         json_file_path = file_path + game + ".json"
 
     # production server, use files from docker directory 
-    elif os.getenv('MODUS') == "prod":
+    elif config.get('SERVER', 'modus') == "prod":
         file_path = "/app/backend/website/data/"
         json_file_path = file_path + game + ".json"
 

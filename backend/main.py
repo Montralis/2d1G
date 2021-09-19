@@ -9,12 +9,15 @@ app = create_app()
 
 if __name__ == '__main__':
 
-   if cfg.server['modus'] == 'dev':
-      app.run(debug = True, port = cfg.server['port'])
+   if config.get('SERVER', 'modus') == 'dev':
+      app.run(debug = True, port = config.get('SERVER', 'port'))
+      print("Server was startet in development")
 
-   elif cfg.server['modus'] == 'prod':
+   elif config.get('SERVER', 'modus') == 'prod':
       from waitress import serve
-      serve(app, host = cfg.server['ip'], port=cfg.server['port'])
+      serve(app, host = config.get('SERVER', 'ip'), port=config.get('SERVER', 'port'))
+      print("Server was startet in development")
+
    
    else:
       print('unknown server modus, check serverconf file')
