@@ -2,35 +2,35 @@
     "data": [
         {
             "different": "Auto",
-            "wanted": "KFZ",
-            "id": 1
+            "id": 1,
+            "wanted": "KFZ"
         },
         {
             "different": "Haus",
-            "wanted": "Immobilie",
-            "id": 2
+            "id": 2,
+            "wanted": "Immobilie"
         },
         {
             "different": "Blume",
-            "wanted": "Pflanze",
-            "id": 3
+            "id": 3,
+            "wanted": "Pflanze"
         },
         {
             "different": "Essen",
-            "wanted": "Nahrung",
-            "id": 4
+            "id": 4,
+            "wanted": "Nahrung"
         },
         {
             "different": "Geld",
-            "wanted": "Währung",
-            "id": 5
+            "id": 5,
+            "wanted": "Währung"
         }
     ],
     "name": "twoIdiots",
     "objectStructure": {
         "different": "string",
-        "wanted": "string",
-        "id": "int"
+        "id": "int",
+        "wanted": "string"
     },
     "type": "json"
 }

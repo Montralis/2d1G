@@ -1,12 +1,18 @@
+import os
 import flask
 import json
 import random
-from flask import Blueprint, jsonify, request, flash,  redirect, url_for
+from flask import Blueprint, jsonify, request, flash, redirect, url_for
+import configparser
 
 
 myrequest = Blueprint('myrequest', __name__)
 
 
+config = configparser.RawConfigParser()
+config.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'serverconf.cfg'))
+print(config.get('SERVER', 'modus'))
+# --------------------------------------------------------------------------------------------------
 # common routes
 
 # returns the Flask version
@@ -16,51 +22,50 @@ def version():
 
 
 # --------------------------------------------------------------------------------------------------
-
-# routes for game: Guess
-
-# returns a shuffled list of Guess questions | return == array
-@myrequest.route('/guess', methods=['GET'])
-def guess():
-    json_file_path = "/app/backend/website/data/guess.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["data"]
-            random.shuffle(dataDict)
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
-
-
-# returns the structure of a Guess object | return == JSON
-@myrequest.route('/guess/structure', methods=['GET'])
-def guessStructure():
-    json_file_path = "/app/backend/website/data/guess.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["objectStructure"]
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
-
+# routes for adding Data to JSON files
 
 # add new Guess data to JSON
-@myrequest.route('/guess/add', methods=['POST'])
+@myrequest.route('/add/guess', methods=['POST'])
 def addGuess():
     question = request.form.get('question')
     answer = request.form.get('answer')
     funfact = request.form.get('funfact')
-    json_file_path = "/app/backend/website/data/guess.json"
+
+    newGuess = { "question": question, "answer": answer, "funfact": funfact}
+    return safeToFile(newGuess, "guess")
+
+
+# add new Two Idiots data to JSON
+@myrequest.route('/add/two-idiots', methods=['POST'])
+def addTwoIdiots():
+    category = request.form.get('category')
+
+    newTwoIdiots = { "category": category}
+    return safeToFile(newTwoIdiots, "two-idiots")
+
+
+# add new Two Idiots data to JSON
+@myrequest.route('/add/different-word', methods=['POST'])
+def addDifferentWord():
+    different = request.form.get('different')
+    wanted = request.form.get('wanted')
+
+    newDifferentWord = {"wanted": wanted, "different":different} 
+    return safeToFile(newDifferentWord, "different-word")
+
+
+def safeToFile(jsonObject, filename ):
+
+    # development server, use file directly 
+    if config.get('SERVER', 'modus') == "dev":
+        file_path = config.get('FILE_PATH', 'dev_def')
+        json_file_path = file_path + filename + ".json"
+
+    # production server, use files from docker directory 
+    elif config.get('SERVER', 'modus') == "prod":
+        file_path = config.get('FILE_PATH', 'prod_def')
+        json_file_path = file_path + filename + ".json"
+
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -68,31 +73,41 @@ def addGuess():
             event = max(events['data'], key=lambda ev: ev['id'])
             nextId = event['id'] + 1
 
-            newGuess =  {"id": nextId, "question": question, "answer": answer, "funfact": funfact}
-            events['data'].append(newGuess)
+            jsonObject['id'] = nextId
+            events['data'].append(jsonObject)
+
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
                     json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    flash('New Guess question was added.', category='success')
+                    flash('New' + filename + 'category was added.', category='success')
                     return redirect(url_for('views.addData'))
 
+
             except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.",  category='error')
+                flash("File not found. Check the path variable and filename.", category='error')
                 return redirect(url_for('views.addData'))
 
     except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.",  category='error')
+        flash("File not found. Check the path variable and filename.", category='error')
         return redirect(url_for('views.addData'))
 
 
-# --------------------------------------------------------------------------------------------------
 
-# routes for game: Two Idiots
+# ------------------------------------------------------------------
 
-# returns a shuffled list of Two Idiots categories | return == array
-@myrequest.route('/two-idiots', methods=['GET'])
-def twoIdiots():
-    json_file_path = "/app/backend/website/data/two-idiots.json"
+# returns a shuffled list of game questions | return == array
+@myrequest.route('/game/<game>', methods=['GET'])
+def gameData(game):
+
+    # development server, use file directly 
+    if config.get('SERVER', 'modus') == "dev":
+        file_path = config.get('FILE_PATH', 'dev_def')
+        json_file_path = file_path + game + ".json"
+
+    # production server, use files from docker directory 
+    elif config.get('SERVER', 'modus') == "prod":
+        file_path = config.get('FILE_PATH', 'prod_def')
+        json_file_path = file_path + game + ".json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -104,84 +119,22 @@ def twoIdiots():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
+        return {"error": "cannot open file"}
 
 
-# returns the structure of a Two Idiots object | return == JSON
-@myrequest.route('/two-idiots/structure', methods=['GET'])
-def twoIdiotsStructure():
-    json_file_path = "/app/backend/website/data/two-idiots.json"
+# returns the structure of a Guess object | return == JSON
+@myrequest.route('/structure/<game>', methods=['GET'])
+def gameStructure(game):
 
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["objectStructure"]
+    # development server, use file directly 
+    if config.get('SERVER', 'modus') == "dev":
+        file_path = config.get('FILE_PATH', 'dev_def')
+        json_file_path = file_path + game + ".json"
 
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
-
-
-# add new Two Idiots data to JSON
-@myrequest.route('/two-idiots/add', methods=['POST'])
-def addTwoIdiots():
-    category = request.form.get('category')
-
-    json_file_path = "/app/backend/website/data/two-idiots.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            events = json.load(f)
-            event = max(events['data'], key=lambda ev: ev['id'])
-            nextId = event['id'] + 1
-
-            newTwoIdiots =  {"id": nextId, "category": category}
-            events['data'].append(newTwoIdiots)
-            try:
-                with open(json_file_path, 'w', encoding='utf-8') as fp:
-                    json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    flash('New Two Idiots category was added.', category='success')
-                    return redirect(url_for('views.addData'))
-
-
-            except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.",  category='error')
-                return redirect(url_for('views.addData'))
-
-    except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.",  category='error')
-        return redirect(url_for('views.addData'))
-
-
-
-# --------------------------------------------------------------------------------------------------
-
-# routes for game: Different Word
-
-# returns a shuffled list of Two Idiots categories | return == array
-@myrequest.route('/different-word', methods=['GET'])
-def twoIdiots():
-    json_file_path = "/app/backend/website/data/different-word.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            guessJson = json.loads(f.read())
-            dataDict = guessJson["data"]
-            random.shuffle(dataDict)
-
-            return jsonify(dataDict)
-
-    except FileNotFoundError:
-        print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
-
-
-# returns the structure of a Two Idiots object | return == JSON
-@myrequest.route('/different-word/structure', methods=['GET'])
-def twoIdiotsStructure():
-    json_file_path = "/app/backend/website/data/different-word.json"
+    # production server, use files from docker directory 
+    elif config.get('SERVER', 'modus') == "prod":
+        file_path = config.get('FILE_PATH', 'prod_def')
+        json_file_path = file_path + game + ".json"
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -192,35 +145,4 @@ def twoIdiotsStructure():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
-
-
-# add new Two Idiots data to JSON
-@myrequest.route('/different-word/add', methods=['POST'])
-def addTwoIdiots():
-    category = request.form.get('category')
-
-    json_file_path = "/app/backend/website/data/different-word.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            events = json.load(f)
-            event = max(events['data'], key=lambda ev: ev['id'])
-            nextId = event['id'] + 1
-
-            newTwoIdiots =  {"id": nextId, "category": category}
-            events['data'].append(newTwoIdiots)
-            try:
-                with open(json_file_path, 'w', encoding='utf-8') as fp:
-                    json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    flash('New Two Idiots category was added.', category='success')
-                    return redirect(url_for('views.addData'))
-
-
-            except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.",  category='error')
-                return redirect(url_for('views.addData'))
-
-    except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.",  category='error')
-        return redirect(url_for('views.addData'))
+        return {"error": "cannot open file"}
