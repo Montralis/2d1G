@@ -9,6 +9,7 @@ server = {
 }
 
 dev_files = {
+    "def": "/website/data/",
     "guess": "/website/data/guess.json",
     "two-idiots": "/website/data/two-idiots.json",
     "different-word": "/website/data/guess.json",

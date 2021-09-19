@@ -1,8 +1,9 @@
+import os
+
 import flask
 import json
 import random
-from flask import Blueprint, jsonify, request, flash,  redirect, url_for
-import serverconf as cnf
+from flask import Blueprint, jsonify, request, flash, redirect, url_for
 
 myrequest = Blueprint('myrequest', __name__)
 
@@ -34,7 +35,7 @@ def guess():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
+        return {"error": "cannot open file"}
 
 
 # returns the structure of a Guess object | return == JSON
@@ -51,7 +52,7 @@ def guessStructure():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
+        return {"error": "cannot open file"}
 
 
 # add new Guess data to JSON
@@ -68,7 +69,7 @@ def addGuess():
             event = max(events['data'], key=lambda ev: ev['id'])
             nextId = event['id'] + 1
 
-            newGuess =  {"id": nextId, "question": question, "answer": answer, "funfact": funfact}
+            newGuess = {"id": nextId, "question": question, "answer": answer, "funfact": funfact}
             events['data'].append(newGuess)
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
@@ -77,11 +78,11 @@ def addGuess():
                     return redirect(url_for('views.addData'))
 
             except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.",  category='error')
+                flash("File not found. Check the path variable and filename.", category='error')
                 return redirect(url_for('views.addData'))
 
     except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.",  category='error')
+        flash("File not found. Check the path variable and filename.", category='error')
         return redirect(url_for('views.addData'))
 
 
@@ -104,7 +105,7 @@ def twoIdiots():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
+        return {"error": "cannot open file"}
 
 
 # returns the structure of a Two Idiots object | return == JSON
@@ -121,7 +122,7 @@ def twoIdiotsStructure():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
+        return {"error": "cannot open file"}
 
 
 # add new Two Idiots data to JSON
@@ -137,7 +138,7 @@ def addTwoIdiots():
             event = max(events['data'], key=lambda ev: ev['id'])
             nextId = event['id'] + 1
 
-            newTwoIdiots =  {"id": nextId, "category": category}
+            newTwoIdiots = {"id": nextId, "category": category}
             events['data'].append(newTwoIdiots)
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
@@ -147,13 +148,12 @@ def addTwoIdiots():
 
 
             except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.",  category='error')
+                flash("File not found. Check the path variable and filename.", category='error')
                 return redirect(url_for('views.addData'))
 
     except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.",  category='error')
+        flash("File not found. Check the path variable and filename.", category='error')
         return redirect(url_for('views.addData'))
-
 
 
 # --------------------------------------------------------------------------------------------------
@@ -175,7 +175,7 @@ def differentWord():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
+        return {"error": "cannot open file"}
 
 
 # returns the structure of a Two Idiots object | return == JSON
@@ -192,7 +192,7 @@ def differentWordStructure():
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error" : "cannot open file"}
+        return {"error": "cannot open file"}
 
 
 # add new Two Idiots data to JSON
@@ -208,7 +208,7 @@ def addDifferentWord():
             event = max(events['data'], key=lambda ev: ev['id'])
             nextId = event['id'] + 1
 
-            newTwoIdiots =  {"id": nextId, "category": category}
+            newTwoIdiots = {"id": nextId, "category": category}
             events['data'].append(newTwoIdiots)
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
@@ -218,9 +218,35 @@ def addDifferentWord():
 
 
             except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.",  category='error')
+                flash("File not found. Check the path variable and filename.", category='error')
                 return redirect(url_for('views.addData'))
 
     except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.",  category='error')
+        flash("File not found. Check the path variable and filename.", category='error')
         return redirect(url_for('views.addData'))
+
+
+# test for redesign backend
+
+
+# returns a shuffled list of Guess questions | return == array
+@myrequest.route('/game-data/<game>', methods=['GET'])
+def gameData(game):
+    json_file_path = "test"
+    if os.getenv('MODUS') == "def":
+        file_path = "/website/data/"
+        json_file_path = file_path + game + ".json"
+
+    print(json_file_path)
+
+    try:
+        with open(json_file_path, "r", encoding='utf-8') as f:
+            guessJson = json.loads(f.read())
+            dataDict = guessJson["data"]
+            random.shuffle(dataDict)
+
+            return jsonify(dataDict)
+
+    except FileNotFoundError:
+        print("File not found. Check the path variable and filename.")
+        return {"error": "cannot open file"}
