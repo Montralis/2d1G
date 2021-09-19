@@ -22,76 +22,50 @@ def version():
 
 
 # --------------------------------------------------------------------------------------------------
-# API for adding Data to JSON files
+# routes for adding Data to JSON files
 
 # add new Guess data to JSON
-@myrequest.route('/guess/add', methods=['POST'])
+@myrequest.route('/add/guess', methods=['POST'])
 def addGuess():
     question = request.form.get('question')
     answer = request.form.get('answer')
     funfact = request.form.get('funfact')
-    json_file_path = "website/data/guess.json"
 
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            events = json.load(f)
-            event = max(events['data'], key=lambda ev: ev['id'])
-            nextId = event['id'] + 1
-
-            newGuess = {"id": nextId, "question": question, "answer": answer, "funfact": funfact}
-            events['data'].append(newGuess)
-            try:
-                with open(json_file_path, 'w', encoding='utf-8') as fp:
-                    json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    flash('New Guess question was added.', category='success')
-                    return redirect(url_for('views.addData'))
-
-            except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.", category='error')
-                return redirect(url_for('views.addData'))
-
-    except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.", category='error')
-        return redirect(url_for('views.addData'))
+    newGuess = { "question": question, "answer": answer, "funfact": funfact}
+    return safeToFile(newGuess, "guess")
 
 
 # add new Two Idiots data to JSON
-@myrequest.route('/two-idiots/add', methods=['POST'])
+@myrequest.route('/add/two-idiots', methods=['POST'])
 def addTwoIdiots():
     category = request.form.get('category')
 
-    json_file_path = "website/data/two-idiots.json"
-
-    try:
-        with open(json_file_path, "r", encoding='utf-8') as f:
-            events = json.load(f)
-            event = max(events['data'], key=lambda ev: ev['id'])
-            nextId = event['id'] + 1
-
-            newTwoIdiots = {"id": nextId, "category": category}
-            events['data'].append(newTwoIdiots)
-            try:
-                with open(json_file_path, 'w', encoding='utf-8') as fp:
-                    json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    flash('New Two Idiots category was added.', category='success')
-                    return redirect(url_for('views.addData'))
-
-
-            except FileNotFoundError:
-                flash("File not found. Check the path variable and filename.", category='error')
-                return redirect(url_for('views.addData'))
-
-    except FileNotFoundError:
-        flash("File not found. Check the path variable and filename.", category='error')
-        return redirect(url_for('views.addData'))
+    newTwoIdiots = { "category": category}
+    return safeToFile(newTwoIdiots, "two-idiots")
 
 
 # add new Two Idiots data to JSON
-@myrequest.route('/different-word/add', methods=['POST'])
+@myrequest.route('/add/different-word', methods=['POST'])
 def addDifferentWord():
-    category = request.form.get('category')
+    different = request.form.get('different')
+    wanted = request.form.get('wanted')
 
-    json_file_path = "website/data/different-word.json"
+    newDifferentWord = {"wanted": wanted, "different":different} 
+    return safeToFile(newDifferentWord, "different-word")
+
+
+def safeToFile(jsonObject, filename ):
+
+    # development server, use file directly 
+    if config.get('SERVER', 'modus') == "dev":
+        file_path = config.get('FILE_PATH', 'dev_def')
+        json_file_path = file_path + filename + ".json"
+
+    # production server, use files from docker directory 
+    elif config.get('SERVER', 'modus') == "prod":
+        file_path = config.get('FILE_PATH', 'prod_def')
+        json_file_path = file_path + filename + ".json"
+
 
     try:
         with open(json_file_path, "r", encoding='utf-8') as f:
@@ -99,12 +73,13 @@ def addDifferentWord():
             event = max(events['data'], key=lambda ev: ev['id'])
             nextId = event['id'] + 1
 
-            newTwoIdiots = {"id": nextId, "category": category}
-            events['data'].append(newTwoIdiots)
+            jsonObject['id'] = nextId
+            events['data'].append(jsonObject)
+
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
                     json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    flash('New Two Idiots category was added.', category='success')
+                    flash('New' + filename + 'category was added.', category='success')
                     return redirect(url_for('views.addData'))
 
 
@@ -126,12 +101,12 @@ def gameData(game):
 
     # development server, use file directly 
     if config.get('SERVER', 'modus') == "dev":
-        file_path = "website/data/"
+        file_path = config.get('FILE_PATH', 'dev_def')
         json_file_path = file_path + game + ".json"
 
     # production server, use files from docker directory 
     elif config.get('SERVER', 'modus') == "prod":
-        file_path = "/app/backend/website/data/"
+        file_path = config.get('FILE_PATH', 'prod_def')
         json_file_path = file_path + game + ".json"
 
     try:
@@ -153,12 +128,12 @@ def gameStructure(game):
 
     # development server, use file directly 
     if config.get('SERVER', 'modus') == "dev":
-        file_path = "website/data/"
+        file_path = config.get('FILE_PATH', 'dev_def')
         json_file_path = file_path + game + ".json"
 
     # production server, use files from docker directory 
     elif config.get('SERVER', 'modus') == "prod":
-        file_path = "/app/backend/website/data/"
+        file_path = config.get('FILE_PATH', 'prod_def')
         json_file_path = file_path + game + ".json"
 
     try:
