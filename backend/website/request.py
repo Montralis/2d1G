@@ -3,9 +3,15 @@ import flask
 import json
 import random
 from flask import Blueprint, jsonify, request, flash, redirect, url_for
+import configparser
+
 
 myrequest = Blueprint('myrequest', __name__)
 
+
+config = configparser.RawConfigParser()
+config.read(os.path.join(os.path.dirname(__file__), 'backend', 'serverconf.cfg'))
+print(config.get('SERVER', 'modus'))
 # --------------------------------------------------------------------------------------------------
 # common routes
 

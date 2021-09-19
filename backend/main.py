@@ -1,6 +1,9 @@
 import os
 from website import create_app
-import serverconf as cfg
+import configparser
+
+config = configparser.RawConfigParser()
+config.read('serverconf.cfg')
 
 app = create_app()
 
