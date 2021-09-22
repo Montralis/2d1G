@@ -25,15 +25,21 @@ USER_PASSWORD="<password for admin login>"
 ```
 
 ## Running the app
+Run the app from backend, first nav to backend folder:
 
 ```bash
-python backend/main.py
+cd backend
+```
+Then run the app with:
+
+```bash
+python main.py
 ```
 
 If your not sure which python version you are using:
 
 ```bash
-python3 backend/main.py
+python3 main.py
 ```
 
 ## Viewing the app
