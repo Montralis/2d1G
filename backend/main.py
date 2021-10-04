@@ -18,6 +18,6 @@ if __name__ == '__main__':
       serve(app, host = config.get('SERVER', 'ip'), port=config.get('SERVER', 'port'))
       print("Server was startet in development")
 
-   
+
    else:
       print('unknown server modus, check serverconf file')

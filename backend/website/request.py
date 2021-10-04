@@ -31,7 +31,7 @@ def addGuess():
     answer = request.form.get('answer')
     funfact = request.form.get('funfact')
 
-    newGuess = { "question": question, "answer": answer, "funfact": funfact}
+    newGuess = { "question": question, "answer": answer, "funfact": funfact }
     return safeToFile(newGuess, "guess")
 
 
@@ -40,7 +40,7 @@ def addGuess():
 def addTwoIdiots():
     category = request.form.get('category')
 
-    newTwoIdiots = { "category": category}
+    newTwoIdiots = { "category": category }
     return safeToFile(newTwoIdiots, "two-idiots")
 
 
@@ -50,18 +50,18 @@ def addDifferentWord():
     different = request.form.get('different')
     wanted = request.form.get('wanted')
 
-    newDifferentWord = {"wanted": wanted, "different":different} 
+    newDifferentWord = { "wanted": wanted, "different": different }
     return safeToFile(newDifferentWord, "different-word")
 
 
 def safeToFile(jsonObject, filename ):
 
-    # development server, use file directly 
+    # development server, use file directly
     if config.get('SERVER', 'modus') == "dev":
         file_path = config.get('FILE_PATH', 'dev_def')
         json_file_path = file_path + filename + ".json"
 
-    # production server, use files from docker directory 
+    # production server, use files from docker directory
     elif config.get('SERVER', 'modus') == "prod":
         file_path = config.get('FILE_PATH', 'prod_def')
         json_file_path = file_path + filename + ".json"
@@ -79,7 +79,7 @@ def safeToFile(jsonObject, filename ):
             try:
                 with open(json_file_path, 'w', encoding='utf-8') as fp:
                     json.dump(events, fp, sort_keys=True, indent=4, ensure_ascii=False)
-                    flash('New' + filename + 'category was added.', category='success')
+                    flash('New ' + filename + ' data was added.', category='success')
                     return redirect(url_for('views.addData'))
 
 
@@ -99,12 +99,12 @@ def safeToFile(jsonObject, filename ):
 @myrequest.route('/game/<game>', methods=['GET'])
 def gameData(game):
 
-    # development server, use file directly 
+    # development server, use file directly
     if config.get('SERVER', 'modus') == "dev":
         file_path = config.get('FILE_PATH', 'dev_def')
         json_file_path = file_path + game + ".json"
 
-    # production server, use files from docker directory 
+    # production server, use files from docker directory
     elif config.get('SERVER', 'modus') == "prod":
         file_path = config.get('FILE_PATH', 'prod_def')
         json_file_path = file_path + game + ".json"
@@ -119,19 +119,19 @@ def gameData(game):
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
+        return { "error": "cannot open file" }
 
 
 # returns the structure of a Guess object | return == JSON
 @myrequest.route('/structure/<game>', methods=['GET'])
 def gameStructure(game):
 
-    # development server, use file directly 
+    # development server, use file directly
     if config.get('SERVER', 'modus') == "dev":
         file_path = config.get('FILE_PATH', 'dev_def')
         json_file_path = file_path + game + ".json"
 
-    # production server, use files from docker directory 
+    # production server, use files from docker directory
     elif config.get('SERVER', 'modus') == "prod":
         file_path = config.get('FILE_PATH', 'prod_def')
         json_file_path = file_path + game + ".json"
@@ -145,4 +145,4 @@ def gameStructure(game):
 
     except FileNotFoundError:
         print("File not found. Check the path variable and filename.")
-        return {"error": "cannot open file"}
+        return { "error": "cannot open file" }
