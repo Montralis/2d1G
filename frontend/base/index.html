@@ -2,6 +2,9 @@
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0"
+        >
         <title>Trinkspiele</title>
         <link rel="stylesheet"
               href="{{ url_for('static', filename = 'style.css') }}"
@@ -26,66 +29,74 @@
 
                 <template x-if="modeName === 'home'">
                     <div>
-                        <div class="btn-container">
-                            <a class="btn"
-                               x-text="titles.twoIdiots"
-                               @click="modeName = 'twoIdiots';"
-                            ></a>
-                            <a class="btn"
-                               x-text="titles.guess"
-                               @click="modeName = 'guess';"
-                            ></a>
-                        </div>
-
-                        <div class="btn-container">
-                            <a class="btn"
-                               x-text="titles.about"
-                               @click="modeName = 'about';"
-                            ></a>
-                        </div>
+                        <a class="btn"
+                           x-text="titles.twoIdiots"
+                           @click="modeName = 'twoIdiots';"
+                        ></a>
+                        <a class="btn"
+                           x-text="titles.guess"
+                           @click="modeName = 'guess';"
+                        ></a>
+                        <a class="btn"
+                           x-text="titles.differentWord"
+                           @click="modeName = 'differentWord';"
+                        ></a>
+                        <a class="btn"
+                           x-text="titles.about"
+                           @click="modeName = 'about';"
+                        ></a>
                     </div>
                 </template>
 
                 <template x-if="modeName === 'about'">
-                    <div x-init="await loadData();">
-                        <i x-show="!about.data.length">Lade Informationen...</i>
+                    <div x-init="about.flaskVersion = await loadData('version');">
+                        <i x-show="!about.flaskVersion.length">Lade Informationen...</i>
 
-                        <template x-if="about.data.length">
+                        <template x-if="about.flaskVersion.length">
                             <div>
                                 <p class="bubble">
                                     Entwickelt von Leon Thomanek und Luca Feigl in Darmstadt.
                                 </p>
                                 <p class="bubble bubble-answer">
-                                    Wir verwenden:
+                                    Diese Seite ist ein
+                                    <a :href="repository"
+                                       target="_blank"
+                                    >
+                                        Open-Source-Projekt
+                                    </a>
                                     <br />
-                                    Alpine.js v<span x-text="Alpine.version"></span>
-                                    <i>(Frontend, Luca Feigl)</i>
                                     <br />
-                                    Flask v<span x-text="about.data"></span> & Waitress
-                                    <i>(Backend, Leon Thomanek)</i>
+                                    Verwendete Frameworks:
+                                    <br />
+                                    Frontend:
+                                    <u>Alpine.js</u> v<span x-text="Alpine.version"></span>
+                                    <i>(Luca Feigl)</i>
+                                    <br />
+                                    Backend:
+                                    <u>Flask</u> v<span x-text="about.flaskVersion"></span>
+                                    & <u>Waitress</u>
+                                    <i>(Leon Thomanek)</i>
                                     <br />
                                     <br />
                                     © <span x-text="new Date().getFullYear()"></span>
                                 </p>
 
-                                <div class="btn-container">
-                                    <a class="btn"
-                                       x-text="titles.addData"
-                                       @click="window.location.href = '/add-data';"
-                                    ></a>
-                                    <a class="btn"
-                                       @click="modeName = 'home';"
-                                    >
-                                        Zurück
-                                    </a>
-                                </div>
+                                <a class="btn"
+                                   x-text="titles.addData"
+                                   @click="window.location.href = '/add-data';"
+                                ></a>
+                                <a class="btn"
+                                   @click="modeName = 'home';"
+                                >
+                                    Zurück
+                                </a>
                             </div>
                         </template>
                     </div>
                 </template>
 
                 <template x-if="modeName === 'twoIdiots'">
-                    <div x-init="await loadData();">
+                    <div x-init="await loadGameData();">
                         <i x-show="!twoIdiots.data.length">Lade Kategorien...</i>
 
                         <template x-if="twoIdiots.data.length">
@@ -94,25 +105,23 @@
                                    x-text="twoIdiots.data[twoIdiots.index].category"
                                 ></p>
 
-                                <div class="btn-container">
-                                    <a class="btn"
-                                       @click="incIndex();"
-                                    >
-                                        Nächste Kategorie
-                                    </a>
-                                    <a class="btn"
-                                       @click="modeName = 'home';"
-                                    >
-                                        Zurück
-                                    </a>
-                                </div>
+                                <a class="btn"
+                                   @click="incIndex();"
+                                >
+                                    Nächste Kategorie
+                                </a>
+                                <a class="btn"
+                                   @click="modeName = 'home';"
+                                >
+                                    Zurück
+                                </a>
                             </div>
                         </template>
                     </div>
                 </template>
 
                 <template x-if="modeName === 'guess'">
-                    <div x-init="await loadData();">
+                    <div x-init="await loadGameData();">
                         <i x-show="!guess.data.length">Lade Schätzfragen...</i>
 
                         <template x-if="guess.data.length">
@@ -132,25 +141,23 @@
                                     <i x-text="guess.data[guess.index].funfact"></i>
                                 </p>
 
-                                <div class="btn-container">
-                                    <a class="btn"
-                                       x-show="!guess.answerVisible"
-                                       @click="guess.answerVisible = true;"
-                                    >
-                                        Antwort zeigen
-                                    </a>
-                                    <a class="btn"
-                                       x-show="guess.answerVisible"
-                                       @click="guess.answerVisible = false; incIndex();"
-                                    >
-                                        Nächste Schätzfrage
-                                    </a>
-                                    <a class="btn"
-                                       @click="modeName = 'home';"
-                                    >
-                                        Zurück
-                                    </a>
-                                </div>
+                                <a class="btn"
+                                   x-show="!guess.answerVisible"
+                                   @click="guess.answerVisible = true;"
+                                >
+                                    Antwort zeigen
+                                </a>
+                                <a class="btn"
+                                   x-show="guess.answerVisible"
+                                   @click="guess.answerVisible = false; incIndex();"
+                                >
+                                    Nächste Schätzfrage
+                                </a>
+                                <a class="btn"
+                                   @click="modeName = 'home';"
+                                >
+                                    Zurück
+                                </a>
                             </div>
                         </template>
                     </div>

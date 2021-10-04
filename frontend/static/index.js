@@ -1,7 +1,9 @@
+const repository = 'https://github.com/Montralis/2d1G';
+
 const endpoints = {
-    about: 'version',
     twoIdiots: 'two-idiots',
     guess: 'guess',
+    differentWord: 'different-word',
 };
 
 let data = {
@@ -13,9 +15,10 @@ let data = {
         addData: 'Neue Daten hinzufügen',
         twoIdiots: '2 Dumme 1 Gedanke',
         guess: 'Schätzfragen',
+        differentWord: 'Anderes Wort für...',
     },
     about: {
-        data: '',
+        flaskVersion: '',
     },
     twoIdiots: {
         index: 0,
@@ -26,6 +29,11 @@ let data = {
         answerVisible: false,
         data: [],
     },
+    differentWord: {
+        index: 0,
+        data: [],
+    },
+    repository,
 };
 
 document.addEventListener('alpine:init', () => {
@@ -33,11 +41,12 @@ document.addEventListener('alpine:init', () => {
     data = Alpine.reactive(data);
 });
 
-async function loadData() {
-    const modeName = data.modeName;
-    const mode = data[modeName];
-    const endpoint = `/${endpoints[modeName]}`;
+function handleError(error) {
+    console.error(error);
+    data.error = error;
+}
 
+async function loadData(endpoint) {
     try {
         console.log(`Trying to fetch "${endpoint}"...`);
         const res = await fetch(endpoint);
@@ -46,17 +55,19 @@ async function loadData() {
         if (json.error) {
             handleError(json.error);
         } else {
-            mode.data = json;
+            return json;
         }
-    } catch (err) {
-        console.error(err);
-        data.error = err;
+    } catch (error) {
+        handleError(error);
     }
 }
 
-function handleError(error) {
-    console.error(error);
-    data.error = error;
+async function loadGameData() {
+    const modeName = data.modeName;
+    const mode = data[modeName];
+    const endpoint = `/game/${endpoints[modeName]}`;
+
+    mode.data = await loadData(endpoint);
 }
 
 function incIndex() {
