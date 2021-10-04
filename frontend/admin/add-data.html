@@ -2,115 +2,141 @@
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0"
+        >
         <title>Neue Daten hinzufügen - Trinkspiele</title>
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.x.x/dist/css/bootstrap.min.css"
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@5.x.x/dist/css/bootstrap.min.css"
         />
     </head>
 
     <body>
-        <div class="container">
-            <h1 class="mt-2">Neue Daten hinzufügen</h1>
+        <div class="container my-3">
+            <h1>Neue Daten hinzufügen</h1>
 
             <hr />
 
-            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {%
-            for category, message in messages %} {% if category == 'error' %}
-            <div class="alert alert-danger" role="alert">{{ message }}</div>
-            {% else %}
-            <div class="alert alert-success" role="alert">{{ message }}</div>
-            {% endif %} {% endfor %}
-            <hr />
-            {% endif %} {% endwith %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'error' %}
+                            <div class="alert alert-danger"
+                                 role="alert"
+                            >
+                                {{ message }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-success"
+                                 role="alert"
+                            >
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <hr />
+                {% endif %}
+            {% endwith %}
 
             <h2>2D1G-Kategorie hinzufügen</h2>
 
-            <form action="/add/two-idiots" method="POST">
+            <form action="/add/two-idiots"
+                  method="POST"
+            >
                 <div class="row my-3">
                     <label>
-                        <input
-                            class="form-control"
-                            type="text"
-                            name="category"
-                            placeholder="Kategorie"
+                        <input class="form-control"
+                               type="text"
+                               name="category"
+                               placeholder="Kategorie"
                         />
                     </label>
                 </div>
 
-                <button class="btn btn-outline-primary" type="submit">Kategorie hinzufügen</button>
+                <button class="btn btn-outline-primary"
+                        type="submit"
+                >
+                    Kategorie hinzufügen
+                </button>
             </form>
 
             <hr />
 
             <h2>Schätzfrage hinzufügen</h2>
 
-            <form action="/add/guess" method="POST">
+            <form action="/add/guess"
+                  method="POST"
+            >
                 <div class="row my-3">
                     <label>
-                        <input
-                            class="form-control mb-2"
-                            type="text"
-                            name="question"
-                            placeholder="Schätzfrage"
+                        <input class="form-control mb-2"
+                               type="text"
+                               name="question"
+                               placeholder="Schätzfrage"
                         />
                     </label>
                     <label>
-                        <input
-                            class="form-control mb-2"
-                            type="text"
-                            name="answer"
-                            placeholder="Antwort"
+                        <input class="form-control mb-2"
+                               type="text"
+                               name="answer"
+                               placeholder="Antwort"
                         />
                     </label>
                     <label>
-                        <input
-                            class="form-control"
-                            type="text"
-                            name="funfact"
-                            placeholder="Funfact"
+                        <input class="form-control"
+                               type="text"
+                               name="funfact"
+                               placeholder="Funfact"
                         />
                     </label>
                 </div>
 
-                <button class="btn btn-outline-primary" type="submit">
+                <button class="btn btn-outline-primary"
+                        type="submit"
+                >
                     Schätzfrage hinzufügen
                 </button>
             </form>
 
             <hr />
 
-            <h2>Ein anderes Wort für hinzufügen</h2>
+            <h2>Anderes Wort hinzufügen</h2>
 
-            <form action="/add/different-word" method="POST">
+            <form action="/add/different-word"
+                  method="POST"
+            >
                 <div class="row my-3">
                     <label>
-                        <input
-                            class="form-control mb-2"
-                            type="text"
-                            name="wanted"
-                            placeholder="Gesuchtes Wort"
+                        <input class="form-control mb-2"
+                               type="text"
+                               name="wanted"
+                               placeholder="Gesuchtes Wort"
                         />
                     </label>
                     <label>
-                        <input
-                            class="form-control mb-2"
-                            type="text"
-                            name="different"
-                            placeholder="Anderes Wort"
+                        <input class="form-control"
+                               type="text"
+                               name="different"
+                               placeholder="Anderes Wort"
                         />
                     </label>
                 </div>
 
-                <button class="btn btn-outline-primary" type="submit">
-                    Anderse Wort hinzufügen
+                <button class="btn btn-outline-primary"
+                        type="submit"
+                >
+                    Anderes Wort hinzufügen
                 </button>
             </form>
 
             <hr />
 
             <form action="/logout">
-                <button class="btn btn-outline-danger" type="submit">Logout</button>
+                <button class="btn btn-outline-danger"
+                        type="submit"
+                >
+                    Logout
+                </button>
             </form>
         </div>
     </body>
