@@ -6,11 +6,28 @@
               content="width=device-width, initial-scale=1.0"
         >
         <title>Trinkspiele</title>
+        <link rel="apple-touch-icon"
+              sizes="180x180"
+              href="/apple-touch-icon.png"
+        >
+        <link rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="/favicon-32x32.png"
+        >
+        <link rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="/favicon-16x16.png"
+        >
+        <link rel="manifest"
+              href="/site.webmanifest"
+        >
         <link rel="stylesheet"
-              href="{{ url_for('static', filename = 'style.css') }}"
+              href="/style.css"
         />
         <script type="text/javascript"
-                src="{{ url_for('static', filename = 'index.js') }}"
+                src="/index.js"
         ></script>
         <script defer
                 src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
@@ -53,33 +70,36 @@
                     </template>
 
                     <template x-if="modeName === 'about'">
-                        <div x-init="about.flaskVersion = await loadData('version');">
+                        <div x-init="about.flaskVersion = await loadData('/version');">
                             <i x-show="!about.flaskVersion.length">Lade Informationen...</i>
 
                             <template x-if="about.flaskVersion.length">
                                 <div>
                                     <p class="bubble">
-                                        Entwickelt von Leon Thomanek und Luca Feigl in Darmstadt.
+                                        Entwickelt von
+                                        <a href="https://github.com/Montralis"
+                                           target="_blank"
+                                        >Leon Thomanek</a> <i>(Backend)</i>
+                                        <br />
+                                        und
+                                        <a href="https://github.com/lfeigl"
+                                           target="_blank"
+                                        >Luca Feigl</a> <i>(Frontend)</i> in Darmstadt.
                                     </p>
                                     <p class="bubble bubble-answer">
                                         Diese Seite ist ein
                                         <a :href="repository"
                                            target="_blank"
-                                        >
-                                            Open-Source-Projekt
-                                        </a>
+                                        >Open-Source-Projekt</a>.
                                         <br />
                                         <br />
-                                        Verwendete Frameworks:
+                                        <u>Verwendete Frameworks:</u>
                                         <br />
-                                        Frontend:
-                                        <u>Alpine.js</u> v<span x-text="Alpine.version"></span>
-                                        <i>(Luca Feigl)</i>
+                                        <b>Frontend:</b>
+                                        Alpine.js v<span x-text="Alpine.version"></span>
                                         <br />
-                                        Backend:
-                                        <u>Flask</u> v<span x-text="about.flaskVersion"></span>
-                                        & <u>Waitress</u>
-                                        <i>(Leon Thomanek)</i>
+                                        <b>Backend:</b>
+                                        Flask v<span x-text="about.flaskVersion"></span> & Waitress
                                         <br />
                                         <br />
                                         © <span x-text="new Date().getFullYear()"></span>
