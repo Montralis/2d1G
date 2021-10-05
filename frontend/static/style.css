@@ -13,9 +13,8 @@ html {
     font-weight: 400;
     color: #FFFFFF;
     text-align: center;
-    background: #FC5C7D;
-    background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);
-    background: linear-gradient(to right, #6A82FB, #FC5C7D);
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
 }
 
 h1 {
@@ -25,7 +24,7 @@ h1 {
 }
 
 hr {
-    border-color: #FFFFFF;
+    border: rgba(255, 255, 255, .5) solid 1px;
 }
 
 .btn {
@@ -58,10 +57,12 @@ hr {
     user-select: none;
 }
 
-.btn:hover {
-    color: rgba(255, 255, 255, .5);
-    outline-offset: 15px;
-    outline-color: rgba(255, 255, 255, 0);
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover {
+        color: rgba(255, 255, 255, .5);
+        outline-offset: 15px;
+        outline-color: rgba(255, 255, 255, 0);
+    }
 }
 
 .bubble {
