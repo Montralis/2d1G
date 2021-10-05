@@ -1,16 +1,18 @@
-const repository = 'https://github.com/Montralis/2d1G';
-
-const endpoints = {
-    twoIdiots: 'two-idiots',
-    guess: 'guess',
-    differentWord: 'different-word',
+const config = {
+    mainTitle: 'Trinkspiele',
+    repository: 'https://github.com/Montralis/2d1G',
+    apiEndpoints: {
+        twoIdiots: 'two-idiots',
+        guess: 'guess',
+        differentWord: 'different-word',
+    },
 };
 
 let data = {
     error: null,
     modeName: 'home',
     titles: {
-        home: 'Wähle ein Trinkspiel aus',
+        home: config.mainTitle,
         about: 'Über diese Seite',
         addData: 'Neue Daten hinzufügen',
         twoIdiots: '2 Dumme 1 Gedanke',
@@ -33,13 +35,20 @@ let data = {
         index: 0,
         data: [],
     },
-    repository,
+    repository: config.repository,
 };
 
 document.addEventListener('alpine:init', () => {
     console.log(`Loaded Alpine.js v${Alpine.version}`);
     data = Alpine.reactive(data);
 });
+
+function setMode(modeName) {
+    const fullTitle = `${data.titles[modeName]} - ${config.mainTitle}`;
+
+    document.title = modeName === 'home' ? config.mainTitle : fullTitle;
+    data.modeName = modeName;
+}
 
 function handleError(error) {
     console.error(error);
@@ -65,7 +74,7 @@ async function loadData(endpoint) {
 async function loadGameData() {
     const modeName = data.modeName;
     const mode = data[modeName];
-    const endpoint = `/game/${endpoints[modeName]}`;
+    const endpoint = `/game/${config.apiEndpoints[modeName]}`;
 
     mode.data = await loadData(endpoint);
 }

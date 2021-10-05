@@ -19,150 +19,165 @@
 
     <body>
         <div x-data="data">
-            <div x-show="error">
-                <h1>Es ist ein Fehler aufgetreten...</h1>
-                <pre x-text="error"></pre>
-            </div>
+            <template x-if="error">
+                <div>
+                    <h1>Es ist ein Fehler aufgetreten...</h1>
+                    <pre x-text="error"></pre>
+                </div>
+            </template>
 
-            <div x-show="!error">
-                <h1 x-text="titles[modeName]"></h1>
+            <template x-if="!error">
+                <div>
+                    <h1 x-text="titles[modeName]"></h1>
 
-                <template x-if="modeName === 'home'">
-                    <div>
-                        <a class="btn"
-                           x-text="titles.twoIdiots"
-                           @click="modeName = 'twoIdiots';"
-                        ></a>
-                        <a class="btn"
-                           x-text="titles.guess"
-                           @click="modeName = 'guess';"
-                        ></a>
-                        <a class="btn"
-                           x-text="titles.differentWord"
-                           @click="modeName = 'differentWord';"
-                        ></a>
-                        <a class="btn"
-                           x-text="titles.about"
-                           @click="modeName = 'about';"
-                        ></a>
-                    </div>
-                </template>
+                    <template x-if="modeName === 'home'">
+                        <div>
+                            <a class="btn"
+                               x-text="titles.twoIdiots"
+                               @click="setMode('twoIdiots');"
+                            ></a>
+                            <a class="btn"
+                               x-text="titles.guess"
+                               @click="setMode('guess');"
+                            ></a>
+                            <a class="btn"
+                               x-text="titles.differentWord"
+                               @click="setMode('differentWord');"
+                            ></a>
+                            <hr />
+                            <a class="btn"
+                               x-text="titles.about"
+                               @click="setMode('about');"
+                            ></a>
+                        </div>
+                    </template>
 
-                <template x-if="modeName === 'about'">
-                    <div x-init="about.flaskVersion = await loadData('version');">
-                        <i x-show="!about.flaskVersion.length">Lade Informationen...</i>
+                    <template x-if="modeName === 'about'">
+                        <div x-init="about.flaskVersion = await loadData('version');">
+                            <i x-show="!about.flaskVersion.length">Lade Informationen...</i>
 
-                        <template x-if="about.flaskVersion.length">
-                            <div>
-                                <p class="bubble">
-                                    Entwickelt von Leon Thomanek und Luca Feigl in Darmstadt.
-                                </p>
-                                <p class="bubble bubble-answer">
-                                    Diese Seite ist ein
-                                    <a :href="repository"
-                                       target="_blank"
+                            <template x-if="about.flaskVersion.length">
+                                <div>
+                                    <p class="bubble">
+                                        Entwickelt von Leon Thomanek und Luca Feigl in Darmstadt.
+                                    </p>
+                                    <p class="bubble bubble-answer">
+                                        Diese Seite ist ein
+                                        <a :href="repository"
+                                           target="_blank"
+                                        >
+                                            Open-Source-Projekt
+                                        </a>
+                                        <br />
+                                        <br />
+                                        Verwendete Frameworks:
+                                        <br />
+                                        Frontend:
+                                        <u>Alpine.js</u> v<span x-text="Alpine.version"></span>
+                                        <i>(Luca Feigl)</i>
+                                        <br />
+                                        Backend:
+                                        <u>Flask</u> v<span x-text="about.flaskVersion"></span>
+                                        & <u>Waitress</u>
+                                        <i>(Leon Thomanek)</i>
+                                        <br />
+                                        <br />
+                                        © <span x-text="new Date().getFullYear()"></span>
+                                    </p>
+
+                                    <a class="btn"
+                                       x-text="titles.addData"
+                                       @click="window.location.href = '/add-data';"
+                                    ></a>
+                                    <a class="btn"
+                                       @click="setMode('home');"
                                     >
-                                        Open-Source-Projekt
+                                        Zurück
                                     </a>
-                                    <br />
-                                    <br />
-                                    Verwendete Frameworks:
-                                    <br />
-                                    Frontend:
-                                    <u>Alpine.js</u> v<span x-text="Alpine.version"></span>
-                                    <i>(Luca Feigl)</i>
-                                    <br />
-                                    Backend:
-                                    <u>Flask</u> v<span x-text="about.flaskVersion"></span>
-                                    & <u>Waitress</u>
-                                    <i>(Leon Thomanek)</i>
-                                    <br />
-                                    <br />
-                                    © <span x-text="new Date().getFullYear()"></span>
-                                </p>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
 
-                                <a class="btn"
-                                   x-text="titles.addData"
-                                   @click="window.location.href = '/add-data';"
-                                ></a>
-                                <a class="btn"
-                                   @click="modeName = 'home';"
-                                >
-                                    Zurück
-                                </a>
-                            </div>
-                        </template>
-                    </div>
-                </template>
+                    <template x-if="modeName === 'twoIdiots'">
+                        <div x-init="await loadGameData();">
+                            <i x-show="!twoIdiots.data.length">Lade Kategorien...</i>
 
-                <template x-if="modeName === 'twoIdiots'">
-                    <div x-init="await loadGameData();">
-                        <i x-show="!twoIdiots.data.length">Lade Kategorien...</i>
+                            <template x-if="twoIdiots.data.length">
+                                <div>
+                                    <p class="bubble"
+                                       x-text="twoIdiots.data[twoIdiots.index].category"
+                                    ></p>
 
-                        <template x-if="twoIdiots.data.length">
-                            <div>
-                                <p class="bubble"
-                                   x-text="twoIdiots.data[twoIdiots.index].category"
-                                ></p>
+                                    <a class="btn"
+                                       @click="incIndex();"
+                                    >
+                                        Nächste Kategorie
+                                    </a>
+                                    <a class="btn"
+                                       @click="setMode('home');"
+                                    >
+                                        Zurück
+                                    </a>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
 
-                                <a class="btn"
-                                   @click="incIndex();"
-                                >
-                                    Nächste Kategorie
-                                </a>
-                                <a class="btn"
-                                   @click="modeName = 'home';"
-                                >
-                                    Zurück
-                                </a>
-                            </div>
-                        </template>
-                    </div>
-                </template>
+                    <template x-if="modeName === 'guess'">
+                        <div x-init="await loadGameData();">
+                            <i x-show="!guess.data.length">Lade Schätzfragen...</i>
 
-                <template x-if="modeName === 'guess'">
-                    <div x-init="await loadGameData();">
-                        <i x-show="!guess.data.length">Lade Schätzfragen...</i>
+                            <template x-if="guess.data.length">
+                                <div>
+                                    <p class="bubble"
+                                       x-text="guess.data[guess.index].question"
+                                    ></p>
+                                    <p class="bubble bubble-answer"
+                                       x-show="guess.answerVisible"
+                                    >
+                                        <b x-text="guess.data[guess.index].answer"></b>
+                                    </p>
+                                    <p class="bubble"
+                                       x-show="guess.answerVisible"
+                                    >
+                                        <b>Funfact:</b>
+                                        <i x-text="guess.data[guess.index].funfact"></i>
+                                    </p>
 
-                        <template x-if="guess.data.length">
-                            <div>
-                                <p class="bubble"
-                                   x-text="guess.data[guess.index].question"
-                                ></p>
-                                <p class="bubble bubble-answer"
-                                   x-show="guess.answerVisible"
-                                >
-                                    <b x-text="guess.data[guess.index].answer"></b>
-                                </p>
-                                <p class="bubble"
-                                   x-show="guess.answerVisible"
-                                >
-                                    <b>Funfact:</b>
-                                    <i x-text="guess.data[guess.index].funfact"></i>
-                                </p>
+                                    <a class="btn"
+                                       x-show="!guess.answerVisible"
+                                       @click="guess.answerVisible = true;"
+                                    >
+                                        Antwort zeigen
+                                    </a>
+                                    <a class="btn"
+                                       x-show="guess.answerVisible"
+                                       @click="guess.answerVisible = false; incIndex();"
+                                    >
+                                        Nächste Schätzfrage
+                                    </a>
+                                    <a class="btn"
+                                       @click="setMode('home');"
+                                    >
+                                        Zurück
+                                    </a>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
 
-                                <a class="btn"
-                                   x-show="!guess.answerVisible"
-                                   @click="guess.answerVisible = true;"
-                                >
-                                    Antwort zeigen
-                                </a>
-                                <a class="btn"
-                                   x-show="guess.answerVisible"
-                                   @click="guess.answerVisible = false; incIndex();"
-                                >
-                                    Nächste Schätzfrage
-                                </a>
-                                <a class="btn"
-                                   @click="modeName = 'home';"
-                                >
-                                    Zurück
-                                </a>
-                            </div>
-                        </template>
-                    </div>
-                </template>
-            </div>
+                    <template x-if="modeName === 'differentWord'">
+                        <div>
+                            <a class="btn"
+                               @click="setMode('home');"
+                            >
+                                Zurück
+                            </a>
+                        </div>
+                    </template>
+                </div>
+            </template>
         </div>
     </body>
 </html>
