@@ -57,10 +57,12 @@ hr {
     user-select: none;
 }
 
-.btn:hover {
-    color: rgba(255, 255, 255, .5);
-    outline-offset: 15px;
-    outline-color: rgba(255, 255, 255, 0);
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover {
+        color: rgba(255, 255, 255, .5);
+        outline-offset: 15px;
+        outline-color: rgba(255, 255, 255, 0);
+    }
 }
 
 .bubble {
