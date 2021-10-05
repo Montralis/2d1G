@@ -33,6 +33,7 @@ let data = {
     },
     differentWord: {
         index: 0,
+        wantedVisible: false,
         data: [],
     },
     repository: config.repository,

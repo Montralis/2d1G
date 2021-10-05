@@ -168,12 +168,39 @@
                     </template>
 
                     <template x-if="modeName === 'differentWord'">
-                        <div>
-                            <a class="btn"
-                               @click="setMode('home');"
-                            >
-                                Zurück
-                            </a>
+                        <div x-init="await loadGameData();">
+                            <i x-show="!differentWord.data.length">Lade Wörter...</i>
+
+                            <template x-if="differentWord.data.length">
+                                <div>
+                                    <p class="bubble"
+                                       x-text="differentWord.data[differentWord.index].different"
+                                    ></p>
+                                    <p class="bubble bubble-answer"
+                                       x-show="differentWord.wantedVisible"
+                                    >
+                                        <b x-text="differentWord.data[differentWord.index].wanted"></b>
+                                    </p>
+
+                                    <a class="btn"
+                                       x-show="!differentWord.wantedVisible"
+                                       @click="differentWord.wantedVisible = true;"
+                                    >
+                                        Gesuchtes Wort zeigen
+                                    </a>
+                                    <a class="btn"
+                                       x-show="differentWord.wantedVisible"
+                                       @click="differentWord.wantedVisible = false; incIndex();"
+                                    >
+                                        Nächstes Wort
+                                    </a>
+                                    <a class="btn"
+                                       @click="setMode('home');"
+                                    >
+                                        Zurück
+                                    </a>
+                                </div>
+                            </template>
                         </div>
                     </template>
                 </div>
